@@ -48,7 +48,7 @@ int	exec_philo_task(t_philo_routine_data routine_data);
 t_philo_routine_data	*check_args_and_make_routine_data(int argc, char *argv);
 
 //init.c
-t_mutex	*init_all_mutex_data(philosophers_info *philo_info);
+t_mutex	*init_all_mutex_data(t_philo_routine_data *philo_info);
 void	set_data_in_philo_arry(t_philo_status philo_data_arry, t_philo_routine_data routine_data, t_mutex mutex_data)
 
 //哲学者のルーティーン
