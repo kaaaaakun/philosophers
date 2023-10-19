@@ -19,18 +19,12 @@
 # define INIT 0x0
 # define ARGS_ERROR 0x1
 
-typedef struct s_philo{
-    int						philo_id;
-    t_mutex					mutex_struct;;
-	t_philo_routine_data	routine_data;
-} t_philo;
-
 typedef struct s_philo_routein_data{
     int	num_of_philo;
     int	time_to_die;
     int	ime_to_eat;
     int	time_to_sleep;
-    int	eat_count;
+    int	number_of_times_each_philosopher_must_eat;
 } t_philo_routine_data;
 
 typedef struct s_mutex{
@@ -39,14 +33,23 @@ typedef struct s_mutex{
     int print;
 } t_mutex;
 
+typedef struct s_philo_status{
+    int						philo_id;
+	int						eat_count;
+    t_mutex					*mutex_struct;
+	t_philo_routine_data	*routine_data
+} t_philo_status;
+
 //main.c
 int main(int argc, char *argv);
+int	exec_philo_task(t_philo_routine_data routine_data);
 
 //check_args.c
 t_philo_routine_data	*check_args_and_make_routine_data(int argc, char *argv);
 
-//mutex_init.c
+//init.c
 t_mutex	*init_all_mutex_data(philosophers_info *philo_info);
+void	set_data_in_philo_arry(t_philo_status philo_data_arry, t_philo_routine_data routine_data, t_mutex mutex_data)
 
 //哲学者のルーティーン
 //パノプティコン

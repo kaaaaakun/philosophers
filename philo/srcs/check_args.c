@@ -28,7 +28,7 @@ t_philo_routine_data	*check_args_and_make_routine_data(int argc, char *argv)
 	routine_data->time_to_eat = philo_atoi(argv[3]);
 	routine_data->time_to_sleep = philo_atoi(argv[4]);
 	if (argc == 6)
-		routine_data->eat_count = philo_atoi(argv[5]);
+		routine_data->number_of_times_each_philosopher_must_eat = philo_atoi(argv[5]);
 	else
 		routine_data->eat_count = -1;
 	if (flag == ARGS_ERROR)

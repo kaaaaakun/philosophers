@@ -18,7 +18,6 @@ int main(int argc, char *argv)
 {
 	t_philo_routine_data	*routine_data;
 
-	//引数のチェック
 	routine_data = check_args_and_make_routine_data(argc, argv)
 	if (routine_data == NULL)
 		return (1);	
@@ -30,16 +29,16 @@ int main(int argc, char *argv)
 
 int	exec_philo_task(t_philo_routine_data routine_data)
 {
-	philosophers_info	*philo_info;
-	t_mutex				*mutex_data;
+	t_philo_status	*philo_data_arry;
+	t_mutex			*mutex_data;
 
-//哲学者の初期化
-	philo_info = philosophers_and_mutex_struct_init();
-
-//mutexの初期化
 	mutex_data = init_all_mutex_data(philo_info);
-	mutex_info = mutex_struct_init(phi);
-    pthread_mutex_init(&print, NULL);
+	philo_data_arry = (t_philo_status *) malloc \
+		(sizeof(t_philo_status) * routine_data->num_of_philo);
+	set_data_in_philo_arry(philo_data_arry, \
+		routine_data, mutex_data);
+	make_threads(philo_data_arry);
+	make_panopticon_thread(philo_data_arry);
 
 //threadの初期化
     ThreadInfo info1 = {1, &cnt, &mutex, &print};
