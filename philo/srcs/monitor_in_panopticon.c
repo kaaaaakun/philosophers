@@ -33,24 +33,42 @@ void	*monitoring_in_panopticon(void *monitor_data)
 	t_panopticon			*panopticon_monitor;
 	t_philo_status			*philo_data_arry;
 	t_philo_routine_data	*routine_data;
+	t_mutex					*mutex_struct;
 	int						i;
 
 	panopticon_monitor = (t_panopticon *)monitor_data;
 	routine_data = panopticon_monitor->routine_data;
 	philo_data_arry = panopticon_monitor->philo_data_arry;
+	mutex_struct = panopticon_monitor->mutex_struct;
+	d_write("cc", mutex_struct);
 	while (1)
 	{
 		i = 0;
 		while (i < routine_data->num_of_philo)
 		{
-			if (philo_data_arry[i].eat_count == DEAD)
+			d_write("e", mutex_struct);
+			pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
+			if (mutex_struct->deth_flag == -1)
+			{
+				d_write("[break]", mutex_struct);
 				break ;
+			}
+			pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
 			i++;
 		}
+		if (mutex_struct->deth_flag == -1)
+		{
+			d_write("[break]", mutex_struct);
+			break ;
+		}
+	d_write("c", mutex_struct);
 	}
-	routine_data->oder_from_panopticon = DEAD;
+	d_write("f", mutex_struct);
+	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+	//
 	pthread_mutex_lock(&panopticon_monitor->mutex_struct->print);
-	printf("%dさんが死にました。", i);
+	d_printf("[OOさんが死にました]",0,"");
 	pthread_mutex_unlock(&panopticon_monitor->mutex_struct->print);
 	return (NULL);
+	(void)philo_data_arry;
 }

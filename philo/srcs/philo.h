@@ -78,6 +78,6 @@ long long int	get_ms_time(void);
 int	philo_atoi(const char *str, int *flag);
 
 //debug.c
-void d_printf(char *msg, int nbr, char *str);
-
+void    d_printf(char *msg, int nbr, char *str);
+void	d_write(char *str, t_mutex *mutex_struct);
 #endif
