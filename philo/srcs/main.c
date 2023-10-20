@@ -12,18 +12,21 @@
 
 #include "philo.h"
 
-int	exec_philosopers(int argc, char *argv);
-void	philo_threads(t_philo_status *philo_data_arry, t_philo_routine_data *routine_data);
+int	exec_philo_task(t_philo_routine_data *routine_data, int *flag);
+int main(int argc, char *argvi[]);
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
 	t_philo_routine_data	*routine_data;
 	int						flag;
 
-	routine_data = check_args_and_make_routine_data(argc, argv)
+	d_printf("main", argc, NULL);
+	routine_data = check_args_and_make_routine_data(argc, argv);
 	if (routine_data == NULL)
 		return (1);	
-	exec_philosopers(routine_data, *flag);
+	d_printf("main2", argc, NULL);
+	exec_philo_task(routine_data, &flag);
+	d_printf("main3", argc, NULL);
 	//freeの処理
 	//routine_data
 	//philo_data_arry
@@ -33,18 +36,18 @@ int main(int argc, char *argv)
 	(void)argv;
 }
 
-int	exec_philo_task(t_philo_routine_data routine_data, int *flag)
+int	exec_philo_task(t_philo_routine_data *routine_data, int *flag)
 {
 	t_philo_status	*philo_data_arry;
 	t_mutex			*mutex_data;
 	pthread_t		*philo_pthread_arry;
 
 	//mutexを使用する値の初期設定
-	mutex_data = init_all_mutex_data(philo_info);
+	mutex_data = init_all_mutex_data(routine_data);
 	//各threadの使用する関数ポインタの作成
 	philo_data_arry = (t_philo_status *) malloc (sizeof(t_philo_status) * routine_data->num_of_philo);
 	if (philo_data_arry == NULL)
-		return (NULL)
+		return (-1);
 	//各threadの使用する関数配列にデータの差し込み
 	set_data_in_philo_arry(philo_data_arry, routine_data, mutex_data);
 	//thread用のphilo配列の作成
@@ -52,32 +55,16 @@ int	exec_philo_task(t_philo_routine_data routine_data, int *flag)
 	if (philo_pthread_arry == NULL)
 	{
 		free (philo_data_arry);
-		return (NULL);
+		return (-1);
 	}
 	//pthreadの作成
 	make_philo_threads(philo_pthread_arry, philo_data_arry, routine_data);
 	//pthread_panoptionの作成
 	set_and_make_panopticon_thread(philo_data_arry, routine_data, mutex_data);
-
-//threadの初期化
-    ThreadInfo info1 = {1, &cnt, &mutex, &print};
-    ThreadInfo info2 = {2, &cnt, &mutex, &print};
-
-//threadの作成
-    pthread_create(&p1, NULL, routine, (void *)&info1);
-    pthread_create(&p2, NULL, routine, (void *)&info2);
-
-//他のthreadを待つ
-    pthread_join(p1, NULL);
-    pthread_join(p2, NULL);
-
-//mutexの破壊
-    pthread_mutex_destroy(&mutex);
-    pthread_mutex_destroy(&print);
-
+//thread joinとmutex破壊
+//	join_philo_thread();
+//	destroy_mutex();
     return (0);
-	(void)argc;
-	(void)argv;
-
+	(void)flag;
 }
 

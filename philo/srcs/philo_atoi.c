@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 
 #include <limits.h>
+#include "philo.h"
+
+static int	ft_isdigit(int c)
+{
+	if ('0' <= c && c <= '9')
+		return (1);
+	return (0);
+}
 
 static long long int	plus_atoi(const char *str, int *flag)
 {

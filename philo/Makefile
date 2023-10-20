@@ -16,13 +16,21 @@ NAME = philo
 SRCS_DIR = srcs
 OBJS_DIR = objs
 
-SRCS = \
-	srcs/main.c
+SRCS = $(addprefix srcs/, \
+		main.c \
+		check_args.c \
+		init.c \
+		routine_philo_life.c \
+		monitor_in_panopticon.c \
+		gettimeofday.c \
+		philo_atoi.c \
+		debug.c \
+		)
 
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
-CFLAGS  = -Wall -Wextra -Werror -g
+CFLAGS  = -Wall -Wextra -Werror -g -fsanitize=thread
 INCLUDE = -I ./srsc -I ./includes
 RM		= rm -rf
 
