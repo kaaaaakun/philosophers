@@ -6,11 +6,15 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 20:41:15 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/19 20:54:15 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:15:59 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	make_philo_threads(pthread_t *philo_pthread_arry,t_philo_status *philo_data_arry, t_philo_routine_data *routine_data);
+void	set_data_in_philo_arry(t_philo_status *philo_data_arry, t_philo_routine_data *routine_data, t_mutex *mutex_data);
+t_mutex	*init_all_mutex_data(t_philo_routine_data *philo_info);
 
 t_mutex	*init_all_mutex_data(t_philo_routine_data *philo_info)
 {
@@ -44,6 +48,20 @@ void	set_data_in_philo_arry(t_philo_status *philo_data_arry, t_philo_routine_dat
 		philo_data_arry[i]->eat_count = 0;
 		philo_data_arry[i]->mutex_struct = mutex_data;
 		philo_data_arry[i]->routine_data = routine_data;
+		philo_data_arry[i]->oder_from_panopricon = INIT;
 		i++;
 	}
 }
+
+void	make_philo_threads(pthread_t *philo_pthread_arry,t_philo_status *philo_data_arry, t_philo_routine_data *routine_data)
+{
+	int	i;
+
+	i = 0;
+	while (i < routine_data->num_of_philo)
+	{
+		pthread_create(&philo_pthread_arry[i], NULL, routine_philo_life, (void *)&philo_data_arry[i]);
+		i++;
+	}
+}
+

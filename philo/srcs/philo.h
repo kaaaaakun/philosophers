@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:38:18 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/19 20:54:17 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:31:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # define INIT 0x0
 # define ARGS_ERROR 0x1
+# define DEAD -1
+
 
 typedef struct s_philo_routein_data{
     int	num_of_philo;
@@ -25,6 +27,7 @@ typedef struct s_philo_routein_data{
     int	ime_to_eat;
     int	time_to_sleep;
     int	number_of_times_each_philosopher_must_eat;
+	int	oder_from_panopticon;
 } t_philo_routine_data;
 
 typedef struct s_mutex{
@@ -39,6 +42,12 @@ typedef struct s_philo_status{
     t_mutex					*mutex_struct;
 	t_philo_routine_data	*routine_data
 } t_philo_status;
+
+typedef struct s_monitoring_philo{
+	t_philo_status			*philo_data_arry;
+	t_mutex					*mutex_struct;
+	t_philo_routine_data	*routine_data;
+}t_panopticon;
 
 //main.c
 int main(int argc, char *argv);
@@ -55,6 +64,8 @@ void	set_data_in_philo_arry(t_philo_status philo_data_arry, t_philo_routine_data
 //パノプティコン
 
 //utils
+
+long long int	get_ms_time(void);
 //-philo_atoi.h
 int	philo_atoi(const char *str, int *flag);
 
