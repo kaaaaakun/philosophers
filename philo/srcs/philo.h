@@ -81,6 +81,9 @@ int	philo_atoi(const char *str, int *flag);
 void	all_mutex_destroy(t_philo_routine_data *routine_data, t_mutex *mutex_data);
 void	join_philo_thread(t_philo_routine_data *routine_data, pthread_t *philo_pthread_arry);
 
+//print_msg
+void m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct);
+
 //debug.c
 void    d_printf(char *msg, int nbr, char *str);
 void	d_write(char *str, t_mutex *mutex_struct);

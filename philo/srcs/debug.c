@@ -27,3 +27,14 @@ void d_printf(char *msg, int nbr, char *str)
 	printf("%s]\x1b[0m\n", str);
 	usleep(100);
 }
+
+void m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
+{
+	pthread_mutex_lock(&mutex_struct->print);	
+	printf("\x1b[38;5;229m[");
+	printf("%s", msg);
+	printf(":%d", nbr);
+	printf("]\x1b[0m\n");
+	pthread_mutex_unlock(&mutex_struct->print);	
+	(void)type;
+}

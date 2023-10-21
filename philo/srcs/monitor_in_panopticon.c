@@ -66,7 +66,7 @@ void	*monitoring_in_panopticon(void *monitor_data)
 		d_write("f", mutex_struct);
 	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
 	pthread_mutex_lock(&panopticon_monitor->mutex_struct->print);
-	d_printf("[OOさんが死にました]",0,"");
+//	d_write("[OOさんが死にました]", mutex_struct);
 	pthread_mutex_unlock(&panopticon_monitor->mutex_struct->print);
 	return (NULL);
 	(void)philo_data_arry;
