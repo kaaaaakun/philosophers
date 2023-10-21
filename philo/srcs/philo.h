@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:38:18 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/20 15:31:09 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/21 19:30:11 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void	set_and_make_panopticon_thread(t_philo_status *philo_data_arry, t_philo_rou
 long long int	get_ms_time(void);
 //-philo_atoi.h
 int	philo_atoi(const char *str, int *flag);
+
+//end_of_philo
+void	all_mutex_destroy(t_philo_routine_data *routine_data, t_mutex *mutex_data);
+void	join_philo_thread(t_philo_routine_data *routine_data, pthread_t *philo_pthread_arry);
 
 //debug.c
 void    d_printf(char *msg, int nbr, char *str);
