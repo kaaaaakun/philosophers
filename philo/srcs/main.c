@@ -21,13 +21,13 @@ int main(int argc, char *argv[])
 	t_philo_routine_data	*routine_data;
 	int						flag;
 
-	//---死なないやつ/
-	argc = 5;
-	argv[1] = strdup("4");
-	argv[2] = strdup("510");//time_to_die
-	argv[3] = strdup("250");//time_to_eat
-	argv[4] = strdup("250");//time_to_sleep
-	//---/
+//	//---死なないやつ/
+//	argc = 5;
+//	argv[1] = strdup("4");
+//	argv[2] = strdup("510");//time_to_die
+//	argv[3] = strdup("250");//time_to_eat
+//	argv[4] = strdup("250");//time_to_sleep
+//	//---/
 	routine_data = check_args_and_make_routine_data(argc, argv);
 	if (routine_data == NULL)
 		return (1);	
@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
 	//philo_data_arry
 	//philo_pthread_arry
 	//---free
-	free(argv[1]);
-	free(argv[2]);
-	free(argv[3]);
-	free(argv[4]);
+//	free(argv[1]);
+//	free(argv[2]);
+//	free(argv[3]);
+//	free(argv[4]);
 	//-----
     return (0);
 	(void)argc;

@@ -19,7 +19,10 @@ t_philo_routine_data	*check_args_and_make_routine_data(int argc, char *argv[])
 
 	flag = INIT;
 	if (!(argc == 5 || argc == 6))
+	{
+		printf("ERROR\n");
 		return (NULL);
+	}
 	routine_data = (t_philo_routine_data *) malloc (sizeof(t_philo_routine_data) * 1);
 	if (routine_data == NULL)
 		return (NULL);

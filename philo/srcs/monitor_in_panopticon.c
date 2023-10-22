@@ -27,7 +27,6 @@ void	set_and_make_panopticon_thread(t_philo_status *philo_data_arry, t_philo_rou
 	pthread_create(&panopticon, NULL, monitoring_in_panopticon, (void *)&panopticon_monitor);
 	pthread_join(panopticon, NULL);
 }
-
 	
 void	monitoring_philo_deth_flag(t_mutex *mutex_struct, t_philo_routine_data *routine_data)
 {
@@ -41,14 +40,25 @@ void	monitoring_philo_deth_flag(t_mutex *mutex_struct, t_philo_routine_data *rou
 		{
 			pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
 			if (mutex_struct->deth_flag == -1)
-			{
 				return ;
-			}
 			pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+			if (routine_data->number_of_times_each_philosopher_must_eat != -1)
+			{
+				pthread_mutex_lock(&mutex_struct->eat_count_mutex);
+				if (routine_data->number_of_times_each_philosopher_must_eat == mutex_struct->eat_count)
+				{
+					pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
+					mutex_struct->deth_flag = DEAD;
+						return ;
+					pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+				}
+				pthread_mutex_unlock(&mutex_struct->eat_count_mutex);
+			}
 			i++;
 		}
 	}
 }
+
 void	*monitoring_in_panopticon(void *monitor_data)
 {
 	t_panopticon			*panopticon_monitor;

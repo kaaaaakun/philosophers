@@ -77,15 +77,25 @@ int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[]
 	pthread_mutex_lock(fork[1]);
 	m_printf(FORK, philo_id, 1, mutex_struct);
 	m_printf(EAT, philo_id, 1, mutex_struct);
-	usleep(philosopher->routine_data->time_to_eat);
-	pthread_mutex_unlock(fork[1]);
-	pthread_mutex_unlock(fork[0]);
 	if (philo_id == philosopher->routine_data->num_of_philo - 1)
 	{
 		pthread_mutex_lock(&mutex_struct->eat_count_mutex);	
 		mutex_struct->eat_count++;
+		if (mutex_struct->eat_count == philosopher->routine_data->number_of_times_each_philosopher_must_eat)
+		{
+			pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
+			mutex_struct->deth_flag = DEAD;
+			pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+			pthread_mutex_unlock(&mutex_struct->eat_count_mutex);	
+			pthread_mutex_unlock(fork[1]);
+			pthread_mutex_unlock(fork[0]);
+			return (-1);
+		}
 		pthread_mutex_unlock(&mutex_struct->eat_count_mutex);	
 	}
+	usleep(philosopher->routine_data->time_to_eat);
+	pthread_mutex_unlock(fork[1]);
+	pthread_mutex_unlock(fork[0]);
 	return (SUCCESS);
 }
 

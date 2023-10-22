@@ -36,7 +36,6 @@ typedef struct s_philo_routein_data{
     long long int	time_to_eat;
     long long int	time_to_sleep;
     long long int	number_of_times_each_philosopher_must_eat;
-	long long int	oder_from_panopticon;
 } t_philo_routine_data;
 
 typedef struct s_mutex{
