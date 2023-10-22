@@ -42,7 +42,6 @@ void	monitoring_philo_deth_flag(t_mutex *mutex_struct, t_philo_routine_data *rou
 			pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
 			if (mutex_struct->deth_flag == -1)
 			{
-				d_write("[break]", mutex_struct);
 				return ;
 			}
 			pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
@@ -61,13 +60,8 @@ void	*monitoring_in_panopticon(void *monitor_data)
 	routine_data = panopticon_monitor->routine_data;
 	philo_data_arry = panopticon_monitor->philo_data_arry;
 	mutex_struct = panopticon_monitor->mutex_struct;
-		d_write("cc", mutex_struct);
 	monitoring_philo_deth_flag(mutex_struct, routine_data);
-		d_write("f", mutex_struct);
 	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
-	pthread_mutex_lock(&panopticon_monitor->mutex_struct->print);
-//	d_write("[OOさんが死にました]", mutex_struct);
-	pthread_mutex_unlock(&panopticon_monitor->mutex_struct->print);
 	return (NULL);
 	(void)philo_data_arry;
 }

@@ -28,13 +28,20 @@ void d_printf(char *msg, int nbr, char *str)
 	usleep(100);
 }
 
-void m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
+int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
 {
+	long long int	ms;
+
 	pthread_mutex_lock(&mutex_struct->print);	
-	printf("\x1b[38;5;229m[");
+	ms = get_ms_time();
+	if (ms == -1)
+		return (-1);
+	printf("\x1b[38;5;%d29m", nbr);
+	printf("%lld ", ms);
+	printf("%d ", nbr);
 	printf("%s", msg);
-	printf(":%d", nbr);
-	printf("]\x1b[0m\n");
+	printf("\x1b[0m\n");
 	pthread_mutex_unlock(&mutex_struct->print);	
 	(void)type;
+	return (0);
 }

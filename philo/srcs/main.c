@@ -23,19 +23,15 @@ int main(int argc, char *argv[])
 
 	//---死なないやつ/
 	argc = 5;
-	argv[1] = strdup("2");
-	argv[2] = strdup("3533500");
-	argv[3] = strdup("3533500");
-	argv[4] = strdup("3533500");
+	argv[1] = strdup("4");
+	argv[2] = strdup("510");//time_to_die
+	argv[3] = strdup("250");//time_to_eat
+	argv[4] = strdup("250");//time_to_sleep
 	//---/
-	d_printf("main", argc, NULL);
 	routine_data = check_args_and_make_routine_data(argc, argv);
 	if (routine_data == NULL)
 		return (1);	
-	write (1,"AA\n",3);
-	d_printf("main2", argc, NULL);
 	exec_philo_task(routine_data, &flag);
-	write (1,"AA\n",3);
 	//d_printf("main3", argc, NULL);
 	//freeの処理
 	//routine_data
@@ -46,7 +42,6 @@ int main(int argc, char *argv[])
 	free(argv[2]);
 	free(argv[3]);
 	free(argv[4]);
-	write (1,"AA\n",3);
 	//-----
     return (0);
 	(void)argc;

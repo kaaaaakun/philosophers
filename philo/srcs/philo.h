@@ -20,16 +20,23 @@
 
 # define INIT 0x0
 # define ARGS_ERROR 0x1
+
+# define SUCCESS 0
 # define DEAD -1
 
+# define FORK " has taken a fork"
+# define EAT " is eating"
+# define SLEEP " is sleeping"
+# define THINK " is thinking"
+# define DIED " died"
 
 typedef struct s_philo_routein_data{
-    int	num_of_philo;
-    int	time_to_die;
-    int	time_to_eat;
-    int	time_to_sleep;
-    int	number_of_times_each_philosopher_must_eat;
-	int	oder_from_panopticon;
+    long long int	num_of_philo;
+    long long int	time_to_die;
+    long long int	time_to_eat;
+    long long int	time_to_sleep;
+    long long int	number_of_times_each_philosopher_must_eat;
+	long long int	oder_from_panopticon;
 } t_philo_routine_data;
 
 typedef struct s_mutex{
@@ -72,8 +79,9 @@ void	*routine_philo_life(void *philo_status);
 void	set_and_make_panopticon_thread(t_philo_status *philo_data_arry, t_philo_routine_data *routine_data, t_mutex *mutex_data);
 
 //utils
-
 long long int	get_ms_time(void);
+long long int	only_get_ms_time(void);
+
 //-philo_atoi.h
 int	philo_atoi(const char *str, int *flag);
 
@@ -82,9 +90,9 @@ void	all_mutex_destroy(t_philo_routine_data *routine_data, t_mutex *mutex_data);
 void	join_philo_thread(t_philo_routine_data *routine_data, pthread_t *philo_pthread_arry);
 
 //print_msg
-void m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct);
+int		m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct);
 
 //debug.c
-void    d_printf(char *msg, int nbr, char *str);
+void	d_printf(char *msg, int nbr, char *str);
 void	d_write(char *str, t_mutex *mutex_struct);
 #endif
