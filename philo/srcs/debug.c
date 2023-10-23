@@ -31,16 +31,21 @@ void d_printf(char *msg, int nbr, char *str)
 int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
 {
 	long long int	ms;
+	static long int	start_time;
+	static int		count;
 
-	pthread_mutex_lock(&mutex_struct->print);	
-	ms = get_ms_time();
+	ms = only_get_ms_time();
 	if (ms == -1)
 		return (-1);
+	pthread_mutex_lock(&mutex_struct->print);	
+	if (count == 0)
+		start_time = ms;
 	printf("\x1b[38;5;%d29m", nbr);
-	printf("%lld ", ms);
+	printf("%lld ", ms - start_time);
 	printf("%d ", nbr);
 	printf("%s", msg);
 	printf("\x1b[0m\n");
+	count++;
 	pthread_mutex_unlock(&mutex_struct->print);	
 	(void)type;
 	return (0);
