@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:19:04 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/21 19:42:15 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/23 17:43:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	all_mutex_destroy(t_philo_routine_data *philo_info, t_mutex *mutex_data)
 		pthread_mutex_destroy(&mutex_data->fork[i]);
 		i++;
 	}
-	pthread_mutex_destroy(&mutex_data->eat_count_mutex);
 	pthread_mutex_destroy(&mutex_data->deth_flag_mutex);
 	pthread_mutex_destroy(&mutex_data->print);
 }

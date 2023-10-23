@@ -1,2 +1,10 @@
-.DS_Store
+*.back
 *.o
+*.a
+.DS*
+.vscode/
+.*.un~
+*.swp
+*.json
+*.plist
+philo
