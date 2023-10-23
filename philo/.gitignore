@@ -1,0 +1,13 @@
+*.back
+*.o
+*.a
+.DS*
+.vscode/
+*.un~
+*.swp
+*.json
+*.plist
+libft-puls/ft_calloc.c
+minishell
+minishell_tester
+minishell-tester
