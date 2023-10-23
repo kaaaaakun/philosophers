@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:44:04 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/23 18:22:14 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:54:30 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_philo_routine_data	*check_args_and_make_routine_data(int argc, char *argv[])
 	if (argc == 6)
 		routine_data->number_of_times_each_philosopher_must_eat = philo_atoi(argv[5], &flag);
 	else
-		routine_data->number_of_times_each_philosopher_must_eat = NON_VALUE;
+		routine_data->number_of_times_each_philosopher_must_eat = -1;
 	if (flag == ARGS_ERROR)
 	{	
 		free(routine_data);

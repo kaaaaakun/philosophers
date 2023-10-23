@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:38:18 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/23 18:22:09 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:13:23 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 
 # define SUCCESS 0
 # define DEAD -1
-# define STOP -1
-# define NON_VALUE -2
 
 # define FORK " has taken a fork"
 # define EAT " is eating"
@@ -42,6 +40,8 @@ typedef struct s_philo_routein_data{
 
 typedef struct s_mutex{
     pthread_mutex_t *fork;
+    pthread_mutex_t eat_count_mutex;
+	int				eat_count;
     pthread_mutex_t deth_flag_mutex;
 	int				deth_flag;
     pthread_mutex_t print;
@@ -49,8 +49,6 @@ typedef struct s_mutex{
 
 typedef struct s_philo_status{
     int						philo_id;
-	int						eat_count;
-    pthread_mutex_t			philo_eat_count_mutex;
     t_mutex					*mutex_struct;
 	t_philo_routine_data	*routine_data;
 } t_philo_status;

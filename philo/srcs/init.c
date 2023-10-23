@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 20:41:15 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/23 18:05:51 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:15:59 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_mutex	*init_all_mutex_data(t_philo_routine_data *philo_info)
 		free (mutex_data);
 		return (NULL);
 	}
+	mutex_data->eat_count = 0;
 	mutex_data->deth_flag = 0;
 
 	//mutex_init
@@ -40,6 +41,7 @@ t_mutex	*init_all_mutex_data(t_philo_routine_data *philo_info)
 		pthread_mutex_init(&mutex_data->fork[i], NULL);
 		i++;
 	}
+	pthread_mutex_init(&mutex_data->eat_count_mutex, NULL);
 	pthread_mutex_init(&mutex_data->deth_flag_mutex, NULL);
 	pthread_mutex_init(&mutex_data->print, NULL);
 	return (mutex_data);
@@ -53,8 +55,6 @@ void	set_data_in_philo_arry(t_philo_status *philo_data_arry, t_philo_routine_dat
 	while (i < routine_data->num_of_philo)
 	{
 		philo_data_arry[i].philo_id = i;
-		philo_data_arry[i].eat_count = 0;
-		pthread_mutex_init(&philo_data_arry[i].philo_eat_count_mutex, NULL);
 		philo_data_arry[i].mutex_struct = mutex_data;
 		philo_data_arry[i].routine_data = routine_data;
 		i++;

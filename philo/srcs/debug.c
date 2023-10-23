@@ -38,7 +38,6 @@ int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
 	if (ms == -1)
 		return (-1);
 	pthread_mutex_lock(&mutex_struct->print);
-
 	if (count == 0)
 		start_time = ms;
 	printf("\x1b[38;5;%d29m", nbr);
