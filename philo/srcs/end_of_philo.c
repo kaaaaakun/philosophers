@@ -37,7 +37,6 @@ void	all_mutex_destroy(t_philo_routine_data *philo_info, t_mutex *mutex_data)
 		pthread_mutex_destroy(&mutex_data->fork[i]);
 		i++;
 	}
-	pthread_mutex_destroy(&mutex_data->eat_count_mutex);
 	pthread_mutex_destroy(&mutex_data->deth_flag_mutex);
 	pthread_mutex_destroy(&mutex_data->print);
 }

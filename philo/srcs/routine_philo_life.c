@@ -17,7 +17,7 @@
 # endif
 
 void	*routine_philo_life(void *philo_status);
-int		is_other_philo_dead(t_mutex *mutex_struct);
+int		is_other_philo_dead(t_philo_status *philosopher);
 //int		loop_routine(t_philo_status *philosopher, pthread_mutex_t *fork[]);
 int		set_fork(t_philo_status *philosopher, pthread_mutex_t *fork[]);
 int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[], long long int last_eat_time);
@@ -32,6 +32,24 @@ int		set_fork(t_philo_status *philosopher, pthread_mutex_t *fork[])
 
 	mutex_struct = philosopher->mutex_struct;
 	philo_id = philosopher->philo_id;
+//	if (philo_id % 2 == 0)
+//	{
+//		if (philo_id == philosopher->routine_data->num_of_philo - 1)
+//		{
+//			fork[0] = &mutex_struct->fork[0];
+//			fork[1] = &mutex_struct->fork[philo_id];
+//		}
+//		else
+//		{
+//			fork[0] = &mutex_struct->fork[philo_id];
+//			fork[1] = &mutex_struct->fork[philo_id + 1];
+//		}
+//	}
+//	else if (philo_id % 2 == 1)
+//	{
+//		fork[0] = &mutex_struct->fork[philo_id - 1];
+//		fork[1] = &mutex_struct->fork[philo_id];
+//	}
 	if (philo_id % 2 == 0)
 	{
 		if (philo_id == philosopher->routine_data->num_of_philo - 1)
@@ -47,8 +65,16 @@ int		set_fork(t_philo_status *philosopher, pthread_mutex_t *fork[])
 	}
 	else if (philo_id % 2 == 1)
 	{
-		fork[0] = &mutex_struct->fork[philo_id - 1];
-		fork[1] = &mutex_struct->fork[philo_id];
+		if (philo_id == philosopher->routine_data->num_of_philo - 1)
+		{
+			fork[0] = &mutex_struct->fork[0];
+			fork[1] = &mutex_struct->fork[philo_id];
+		}
+		else
+		{
+			fork[0] = &mutex_struct->fork[philo_id + 1];
+			fork[1] = &mutex_struct->fork[philo_id];
+		}
 	}
 	return (0);
 }
@@ -62,7 +88,7 @@ int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[]
 	mutex_struct = philosopher->mutex_struct;
 	philo_id = philosopher->philo_id;
 	pthread_mutex_lock(fork[0]);
-	if (is_other_philo_dead(mutex_struct) == -1)
+	if (is_other_philo_dead(philosopher) == -1)
 	{
 		if (DEBUG == 1)
 			m_printf("someone_dead", philo_id, 1, mutex_struct);
@@ -74,7 +100,9 @@ int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[]
 	m_printf(FORK, philo_id, 1, mutex_struct);
 	m_printf(EAT, philo_id, 1, mutex_struct);
 	
+	m_printf("bye-1", philo_id, 1, mutex_struct);
 	time_left = get_time_left_of_philo_died(philo_id, last_eat_time, philosopher->routine_data);//死ぬまでの時間
+	m_printf("bye-2", philo_id, 1, mutex_struct);
 	if (time_left < philosopher->routine_data->time_to_eat / 1000)//死ぬまでの時間＜食べる時間
 	{
 		usleep(time_left * 1000);
@@ -83,9 +111,13 @@ int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[]
 		pthread_mutex_unlock(fork[0]);
 		return (-1);
 	}
+	m_printf("bye-3", philo_id, 1, mutex_struct);
 	usleep(philosopher->routine_data->time_to_eat);
-	pthread_mutex_unlock(fork[1]);
+	//usleep(philosopher->routine_data->time_to_eat);
+	m_printf("bye-4", philo_id, 1, mutex_struct);
 	pthread_mutex_unlock(fork[0]);
+	pthread_mutex_unlock(fork[1]);
+	m_printf("bye-5", philo_id, 1, mutex_struct);
 	return (SUCCESS);
 }
 
@@ -99,7 +131,7 @@ int	sleep_philo(t_philo_status *philosopher)
 	routine_data = philosopher->routine_data;
 	mutex_struct = philosopher->mutex_struct;
 	philo_id = philosopher->philo_id;
-	if (is_other_philo_dead(mutex_struct) == -1)
+	if (is_other_philo_dead(philosopher) == -1)
 	{
 		if (DEBUG == 1)
 			m_printf("someone_dead", philo_id, 1, mutex_struct);
@@ -123,7 +155,7 @@ int	think_philo(t_philo_status *philosopher)
 
 	mutex_struct = philosopher->mutex_struct;
 	philo_id = philosopher->philo_id;
-	if (is_other_philo_dead(mutex_struct) == -1)
+	if (is_other_philo_dead(philosopher) == -1)
 	{
 		if (DEBUG == 1)
 			m_printf("someone_dead", philo_id, 1, mutex_struct);
@@ -135,11 +167,18 @@ int	think_philo(t_philo_status *philosopher)
 
 int	set_deth_flag(int philo_id, t_mutex *mutex_struct)
 {
+	int	flag;
+
+	flag = 0;
 	pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
-	mutex_struct->deth_flag = DEAD;
-	if (0 <= philo_id)
-		m_printf(DIED, philo_id, 1, mutex_struct);
+	if (mutex_struct->deth_flag != DEAD)
+	{
+		flag = 1;
+		mutex_struct->deth_flag = DEAD;
+	}
 	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+	if (0 <= philo_id && flag == 1)
+		m_printf(DIED, philo_id, DEAD, mutex_struct);
 	return (0);
 }
 
@@ -186,8 +225,8 @@ long long int	get_time_left_of_philo_died(int philo_id, long long int last_eat_t
 	time_left = routine_data->time_to_die / 1000 - (now_time - last_eat_time);
 	if (DEBUG == 1)
 		dprintf(2,"id : %d \n \
-		now %lld : last %lld \n \
-		n-l %lld : tl %lld \n \
+		now %lld : last_eat_time %lld \n \
+		diff now last %lld : time_left %lld \n \
 		ttd %lld : tte%lld :tts%lld\n", \
 		philo_id, now_time,last_eat_time, \
 		now_time - last_eat_time, time_left, \
@@ -197,14 +236,15 @@ long long int	get_time_left_of_philo_died(int philo_id, long long int last_eat_t
 	(void)routine_philo_life;
 }
 
-int	is_other_philo_dead(t_mutex *mutex_struct)
+int	is_other_philo_dead(t_philo_status *philosopher)
 {
-	pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
-	if (mutex_struct->deth_flag == DEAD)
+	pthread_mutex_lock(&philosopher->eat_count_mutex);
+	if (philosopher->eat_count == DEAD)
 	{
-		pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+		pthread_mutex_unlock(&philosopher->eat_count_mutex);
 		return (-1);
 	}
-	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+	philosopher->eat_count++;
+	pthread_mutex_unlock(&philosopher->eat_count_mutex);
 	return (0);
 }

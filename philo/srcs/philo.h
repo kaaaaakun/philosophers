@@ -36,12 +36,11 @@ typedef struct s_philo_routein_data{
     long long int	time_to_eat;
     long long int	time_to_sleep;
     long long int	number_of_times_each_philosopher_must_eat;
+    long long int	standard_time;
 } t_philo_routine_data;
 
 typedef struct s_mutex{
     pthread_mutex_t *fork;
-    pthread_mutex_t eat_count_mutex;
-	int				eat_count;
     pthread_mutex_t deth_flag_mutex;
 	int				deth_flag;
     pthread_mutex_t print;
@@ -49,6 +48,8 @@ typedef struct s_mutex{
 
 typedef struct s_philo_status{
     int						philo_id;
+    pthread_mutex_t			eat_count_mutex;
+	int						eat_count;
     t_mutex					*mutex_struct;
 	t_philo_routine_data	*routine_data;
 } t_philo_status;
