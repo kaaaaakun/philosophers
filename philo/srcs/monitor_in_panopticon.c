@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 13:52:52 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/21 19:16:52 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:51:46 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ void	monitoring_philo_deth_flag(t_mutex *mutex_struct, t_philo_routine_data *rou
 		while (i < routine_data->num_of_philo)
 		{
 			pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
-			if (mutex_struct->deth_flag == -1)
+			if (mutex_struct->deth_flag == DEAD)
 			{
 				all_philo_to_return(routine_data, philo_data_arry);
+				pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
 				return ;
 			}
 			pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
@@ -76,7 +77,7 @@ void	*monitoring_in_panopticon(void *monitor_data)
 	philo_data_arry = panopticon_monitor->philo_data_arry;
 	mutex_struct = panopticon_monitor->mutex_struct;
 	monitoring_philo_deth_flag(mutex_struct, routine_data, philo_data_arry);
-	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+	m_printf("see you monitor", -1, DEBUG, mutex_struct);
 	return (NULL);
 	(void)philo_data_arry;
 }

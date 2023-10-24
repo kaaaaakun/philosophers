@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:38:18 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/21 20:13:23 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:44:10 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 # define SUCCESS 0
 # define DEAD -1
+# define DEBUG -10
 
 # define FORK " has taken a fork"
 # define EAT " is eating"
@@ -87,7 +88,7 @@ int	philo_atoi(const char *str, int *flag);
 
 //end_of_philo
 void	all_mutex_destroy(t_philo_routine_data *routine_data, t_mutex *mutex_data);
-void	join_philo_thread(t_philo_routine_data *routine_data, pthread_t *philo_pthread_arry);
+void	join_and_destory_mutex(t_philo_routine_data *routine_data, pthread_t *philo_pthread_arry, t_philo_status *philo_data_arry, t_mutex *mutex_data);
 
 //print_msg
 int		m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct);

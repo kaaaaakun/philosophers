@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:17:32 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/21 19:42:17 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:12:26 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ int main(int argc, char *argv[])
 	if (routine_data == NULL)
 		return (1);	
 	exec_philo_task(routine_data, &flag);
-
+	free(routine_data);
     return (0);
-	(void)argc;
-	(void)argv;
 }
 
 int	exec_philo_task(t_philo_routine_data *routine_data, int *flag)
@@ -56,8 +54,9 @@ int	exec_philo_task(t_philo_routine_data *routine_data, int *flag)
 	make_philo_threads(philo_pthread_arry, philo_data_arry, routine_data);
 //pthread_panoptionの作成
 	set_and_make_panopticon_thread(philo_data_arry, routine_data, mutex_data);
+	dprintf(2,"ここまできたよ！");
 //thread joinとmutex破壊
-	join_philo_thread(routine_data, philo_pthread_arry);
+	join_and_destory_mutex(routine_data, philo_pthread_arry, philo_data_arry, mutex_data);
 //	join_philo_thread();
 //	destroy_mutex();
     return (0);
