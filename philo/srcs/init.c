@@ -68,6 +68,7 @@ void	make_philo_threads(pthread_t *philo_pthread_arry,t_philo_status *philo_data
 	i = 0;
 	while (i < routine_data->num_of_philo)
 	{
+		//dprintf(2,"[id:%d ms:%lld]\n" ,i ,get_ms_time());
 		pthread_create(&philo_pthread_arry[i], NULL, &routine_philo_life, (void *)&philo_data_arry[i]);
 		i++;
 	}
