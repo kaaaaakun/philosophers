@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/25 14:30:15 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/25 18:16:37 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,12 +26,14 @@ SRCS = $(addprefix srcs/, \
 		end_of_philo.c \
 		philo_atoi.c \
 		debug.c \
+		okazaki1.c \
+		okazaki2.c \
 		)
 
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
-CFLAGS  = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS  = -Wall -Wextra -Werror -g
 INCLUDE = -I ./srsc -I ./includes
 RM		= rm -rf
 
@@ -41,9 +43,9 @@ ifdef WITH_CRASH
 	CFLAGS += -O0 -fsanitize=address
 endif
 
-ifndef WITH_CRASH
-	CFLAGS += -fsanitize=thread
-endif
+#ifndef WITH_CRASH
+#	CFLAGS += -fsanitize=thread
+#endif
 
 ifdef WITH_DEBUG
 	CFLAGS += -fsanitize=thread -D DEBUG=-10

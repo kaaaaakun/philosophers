@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:32:37 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/21 20:13:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:11:14 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ static long long int	plus_atoi(const char *str, int *flag)
 	}
 	while (ft_isdigit(str[i]))
 	{
-		if ((l_divis == result && l_remain < str[i])
-			|| l_divis < result)
-			return (LONG_MAX);
 		result = result * 10 + (str[i] - '0');
 		if (INT_MAX < result)
 			*flag = ARGS_ERROR;
@@ -63,9 +60,6 @@ static long long int	minus_atoi(const char *str, int *flag)
 	l_remain = (LONG_MIN % 10 * -1) + '0';
 	while (ft_isdigit(str[i]))
 	{
-		if ((l_divis == result && l_remain < str[i])
-			|| l_divis > result)
-			return (LONG_MIN);
 		result = result * 10 - (str[i] - '0');
 		if (result < INT_MIN)
 			*flag = ARGS_ERROR;
@@ -82,7 +76,7 @@ int	philo_atoi(const char *str, int *flag)
 
 	if (*str == '-')
 	{
-		str++;;
+		str++;
 		*flag = ARGS_ERROR;
 		result = minus_atoi(str, flag);
 	}
