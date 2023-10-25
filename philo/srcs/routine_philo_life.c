@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:55:02 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/24 20:44:08 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:56:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int		set_fork(t_philo_status *philosopher, pthread_mutex_t *fork[])
 int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[], long long int *last_eat_time)
 {
     int						philo_id;
-  //  int						num_of_philo;
+	int						num_of_philo;
 	t_mutex					*mutex_struct;
 	long long int			time_left;
 
 	mutex_struct = philosopher->mutex_struct;
 	philo_id = philosopher->philo_id;
-//	num_of_philo = philosopher->routine_data->num_of_philo;
+	num_of_philo = philosopher->routine_data->num_of_philo;
 	pthread_mutex_lock(fork[0]);
 //	if (is_other_philo_dead(philosopher) == -1)
 //	{
@@ -91,13 +91,13 @@ int		get_fork_and_eat_philo(t_philo_status *philosopher, pthread_mutex_t *fork[]
 //		return (-1);
 	}
 	m_printf(FORK, philo_id, 1, mutex_struct);
-//	if (num_of_philo == 1)
-//	{
-//		ft_usleep(philosopher->routine_data->time_to_die);
-//		set_deth_flag(philo_id, mutex_struct);//死亡判定
-//		pthread_mutex_unlock(fork[0]);
-//		return (-1);
-//	}
+	if (num_of_philo == 1)
+	{
+		ft_usleep(philosopher->routine_data->time_to_die);
+		set_deth_flag(philo_id, mutex_struct);//死亡判定
+		pthread_mutex_unlock(fork[0]);
+		return (-1);
+	}
 	pthread_mutex_lock(fork[1]);
 	m_printf(FORK, philo_id, 1, mutex_struct);
 	if (m_printf(EAT, philo_id, 1, mutex_struct) < 0)
@@ -227,6 +227,8 @@ void	meet_up_end(t_philo_status *philosopher)
 			break ;
 		pthread_mutex_unlock(&philosopher->mutex_struct->deth_flag_mutex);		
 	}
+	if (philosopher->mutex_struct->deth_flag != DEAD)
+		philosopher->mutex_struct->deth_flag = DEAD;
 	pthread_mutex_unlock(&philosopher->mutex_struct->deth_flag_mutex);		
 }
 

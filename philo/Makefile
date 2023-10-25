@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/19 20:55:41 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/25 14:30:15 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS = $(addprefix srcs/, \
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
-CFLAGS  = -Wall -Wextra -Werror -g
+CFLAGS  = -Wall -Wextra -Werror -g -fsanitize=thread
 INCLUDE = -I ./srsc -I ./includes
 RM		= rm -rf
 
