@@ -38,6 +38,8 @@ int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
 	ms = only_get_ms_time();
 	if (ms == -1)
 		return (-1);
+	if (type == 0)
+		return (0);
 	pthread_mutex_lock(&mutex_struct->print);
 	if (deth_flag == 1 && type != DEBUG)
 	{
@@ -52,7 +54,7 @@ int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
 		count++;
 	}
 	printf("\x1b[38;5;%d29m%lld %d %s\x1b[0m\n", nbr, ms - start_time, nbr, msg);
+	//printf("%lld %d %s\n", ms - start_time, nbr, msg);
 	pthread_mutex_unlock(&mutex_struct->print);
-	(void)type;
 	return (0);
 }

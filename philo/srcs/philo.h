@@ -18,12 +18,15 @@
 # include <stdlib.h>
 # include <pthread.h>
 
+# ifndef DEBUG
+# define DEBUG 0
+# endif
+
 # define INIT 0x0
 # define ARGS_ERROR 0x1
 
 # define SUCCESS 0
 # define DEAD -1
-# define DEBUG -10
 
 # define FORK " has taken a fork"
 # define EAT " is eating"

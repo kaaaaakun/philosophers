@@ -54,7 +54,6 @@ int	exec_philo_task(t_philo_routine_data *routine_data, int *flag)
 	make_philo_threads(philo_pthread_arry, philo_data_arry, routine_data);
 //pthread_panoptionの作成
 	set_and_make_panopticon_thread(philo_data_arry, routine_data, mutex_data);
-	dprintf(2,"ここまできたよ！");
 //thread joinとmutex破壊
 	join_and_destory_mutex(routine_data, philo_pthread_arry, philo_data_arry, mutex_data);
 //	join_philo_thread();

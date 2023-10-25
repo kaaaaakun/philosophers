@@ -46,7 +46,7 @@ ifndef WITH_CRASH
 endif
 
 ifdef WITH_DEBUG
-	CFLAGS += -fsanitize=thread -D DEBUG=1
+	CFLAGS += -fsanitize=thread -D DEBUG=-10
 endif
 
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -71,7 +71,7 @@ re: fclean all
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 # for debug
 debug:
-	make WITH_DEBUG=0
+	make WITH_DEBUG=1
 
 # # for malloc debug
 # malloc:
