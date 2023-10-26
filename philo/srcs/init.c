@@ -23,10 +23,10 @@ t_mutex	*init_all_mutex_data(t_philo_routine_data *philo_info)
 	t_mutex	*mutex_data;
 	int		i;
 
-	mutex_data = (t_mutex *) ft_malloc (sizeof(t_mutex) * 1);
+	mutex_data = (t_mutex *) malloc (sizeof(t_mutex) * 1);
 	if (mutex_data == NULL)
 		return (NULL);
-	mutex_data->fork = (pthread_mutex_t *) ft_malloc (sizeof(pthread_mutex_t) * \
+	mutex_data->fork = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * \
 			philo_info->num_of_philo);
 	if (mutex_data->fork == NULL)
 	{

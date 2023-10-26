@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:17:32 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/25 18:19:30 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:04:03 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	exec_philo_task(t_philo_routine_data *routine_data, int *flag)
 	pthread_t		*philo_pthread_arry;
 
 	mutex_data = init_all_mutex_data(routine_data);
-	philo_data_arry = (t_philo_status *) ft_malloc \
+	philo_data_arry = (t_philo_status *) malloc \
 					(sizeof(t_philo_status) * routine_data->num_of_philo);
-	philo_pthread_arry = (pthread_t *) ft_malloc \
+	philo_pthread_arry = (pthread_t *) malloc \
 						(sizeof(pthread_t) * routine_data->num_of_philo);
 	if (!philo_data_arry || !mutex_data || !philo_pthread_arry)
 	{
@@ -60,16 +60,16 @@ int	exec_philo_task(t_philo_routine_data *routine_data, int *flag)
 	return (0);
 	(void)flag;
 }
-
-void	*ft_malloc(size_t size)
-{
-	void	*result;
-
-	result = (void *) malloc (size);
-	if (DEBUG == -10)
-		printf("%p/", result);
-	return (result);
-}
+//
+//void	*ft_malloc(size_t size)
+//{
+//	void	*result;
+//
+//	result = (void *) malloc (size);
+//	if (DEBUG == -10)
+//		printf("%p/", result);
+//	return (result);
+//}
 //
 //__attribute__((destructor)) static void destructor()
 //{
