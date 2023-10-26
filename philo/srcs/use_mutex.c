@@ -1,28 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   use_mutex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 18:11:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/25 18:17:01 by tokazaki         ###   ########.fr       */
+/*   Created: 2023/10/26 17:35:59 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/10/26 17:36:02 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	d_printf(char *msg, int nbr, char *str);
-void	d_write(char *str, t_mutex *mutex_struct);
-
-size_t	ft_strlen(char *str)
+int	set_deth_flag(int philo_id, t_mutex *mutex_struct)
 {
-	size_t	i;
+	pthread_mutex_lock(&mutex_struct->deth_flag_mutex);
+	if (mutex_struct->deth_flag != DEAD)
+		mutex_struct->deth_flag = DEAD;
+	else
+	{
+		pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&mutex_struct->deth_flag_mutex);
+	m_printf(DIED, philo_id, DEAD, mutex_struct);
+	return (0);
+}
 
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
+int	is_other_philo_dead(t_philo_status *philosopher)
+{
+	pthread_mutex_lock(&philosopher->eat_count_mutex);
+	if (philosopher->eat_count == DEAD)
+	{
+		pthread_mutex_unlock(&philosopher->eat_count_mutex);
+		return (-1);
+	}
+	philosopher->eat_count++;
+	pthread_mutex_unlock(&philosopher->eat_count_mutex);
+	return (0);
 }
 
 int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)

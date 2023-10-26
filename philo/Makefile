@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/25 18:16:37 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/26 17:35:24 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,17 +17,17 @@ SRCS_DIR = srcs
 OBJS_DIR = objs
 
 SRCS = $(addprefix srcs/, \
-		main.c \
 		check_args.c \
-		init.c \
-		routine_philo_life.c \
-		monitor_in_panopticon.c \
-		gettimeofday.c \
 		end_of_philo.c \
+		gettimeofday.c \
+		init.c \
+		main.c \
+		monitor_in_panopticon.c \
 		philo_atoi.c \
-		debug.c \
-		okazaki1.c \
-		okazaki2.c \
+		philo_eat.c \
+		philo_sleep_think.c \
+		routine_philo_life.c \
+		use_mutex.c \
 		)
 
 OBJS = $(SRCS:.c=.o)

@@ -81,7 +81,8 @@ void	*monitoring_in_panopticon(void *monitor_data)
 	philo_data_arry = panopticon_monitor->philo_data_arry;
 	mutex_struct = panopticon_monitor->mutex_struct;
 	monitoring_philo_deth_flag(mutex_struct, routine_data, philo_data_arry);
-	m_printf("see you monitor", -1, DEBUG, mutex_struct);
+	if (DEBUG == -10)
+		m_printf("see you monitor", -1, DEBUG, mutex_struct);
 	return (NULL);
 	(void)philo_data_arry;
 }
