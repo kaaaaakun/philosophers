@@ -68,6 +68,7 @@ typedef struct s_philo_data{
 
 typedef struct s_monitoring_philo{
 	t_philo_data	*philo_array;
+	pthread_t		*thread_array
 	t_shared_data	*shared_data;
 	t_philo_config	*config;
 }	t_monitor;

@@ -23,8 +23,8 @@ int	main(int argc, char *argv[])
 		return (1);
 	if (init_all_data(&monitor, &config) == false)
 		return (1);
-
-	make_philo_thread()
+	if (make_philo_thread(&monitor, &config) == false)
+		return (1);
 	make_monitor_thread()
 	end_of_meal()
 	exec_philo_task(routine_data, &flag);

@@ -44,6 +44,7 @@ static bool	set_args_config(int argc, char *argv[], t_philo_config *config)
 	config->die_time = philo_atoi(argv[2], &parse_error);
 	config->eat_time = philo_atoi(argv[3], &parse_error);
 	config->sleep_time = philo_atoi(argv[4], &parse_error);
+	config->start_time = get_ms_time() + 300;
 	config->has_option = false;
 	if (argc == 6)
 	{

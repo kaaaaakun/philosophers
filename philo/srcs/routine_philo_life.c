@@ -12,6 +12,36 @@
 
 #include "philo.h"
 
+void	set_stop_prosess(t_shared_data *data)
+{
+	pthread_mutex_lock(&data->shared_lock);
+	data->terminate = true;
+	pthread_mutex_unlock(&data->shared_lock);
+}
+
+void	make_philo_threads(t_monitor *monitor, t_philo_config *config)
+{
+	pthread_t	*thread_array;
+	int			i;
+
+	thread_array = monitor->thread_array;
+	i = 0;
+	while (i < config->num_philo)
+	{
+		if (pthread_create(&thread_array[i], NULL, \
+				&routine_philo_life, (void *)&thread_array[i]) != 0)
+		{
+			set_stop_process(monitor->shared_data);
+			join_philo_thread(thread_array, i);
+			return (false);
+		}
+		i++;
+	}
+}
+
+/// @brief 
+/// @param philosopher 
+
 void	meet_up(t_philo_status *philosopher)
 {
 	static int		meet_up_flag;
