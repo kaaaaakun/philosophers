@@ -45,26 +45,28 @@ typedef struct s_philo_config{
 	unsigned int	start_time;
 }	t_philo_config;
 
-typedef struct s_shared_mutex{
+typedef struct s_shared_data{
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	death_flag_mutex;
-	int				death_flag;
-	pthread_mutex_t	print;
+	pthread_mutex_t	shared_lock;
+	bool			terminate;
 }	t_shared_data;
 
-typedef struct s_philo_{
-	int						id;
-	pthread_mutex_t			eat_count_mutex;
-	int						eat_count;
-	t_shared_data			shared_data;
-	t_philo_routine_data	*routine_data;
-}	t_philo_status;
+typedef struct s_philo_data{
+	int				id;
+	unsigned int	num_philo;
+	unsigned int	die_time;
+	unsigned int	eat_time;
+	unsigned int	sleep_time;
+	pthread_mutex_t	eat_count_mutex;
+	int				eat_count;
+	t_shared_data	*shared_data;
+}	t_philo_data;
 
 typedef struct s_monitoring_philo{
-	t_philo_status			*philo_data_array;
-	t_mutex					*mutex_struct;
-	t_philo_routine_data	*routine_data;
-}	t_panopticon;
+	t_philo_status	*philo_array;
+	t_shared_data	*shared_data;
+	t_philo_config	*config;
+}	t_monitor;
 
 //main.c
 int						main(int argc, char *argv[]);
