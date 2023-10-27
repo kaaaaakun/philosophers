@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/26 19:59:44 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/27 14:15:04 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,35 +71,37 @@ fclean: clean
 re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-#.PHONY: all clean fclean re debug
-## for debug
-#debug:
-#	make WITH_DEBUG=1
+.PHONY: all clean fclean re debug
+# for debug
+debug:
+	make WITH_DEBUG=1
 
-# # for malloc debug
-# malloc:
-# 	make fclean
-# 	make malloc -C $(LIBFT_DIR)
-# 	make all
+ # for malloc debug
+malloc:
+	make fclean
+	make malloc -C $(LIBFT_DIR)
+	make all
 
-## for -fsanitize=address debug
-#crash:
-#	make WITH_CRASH=1
+# for -fsanitize=address debug
+crash:
+	make WITH_CRASH=1
 
-# # nonused variables
-# clang:
-# 	clang --analyze $(SRCS) $(INCLUDE)
+# nonused variables
+clang:
+	clang --analyze $(SRCS) $(INCLUDE)
 
-#del:
-#	rm -rf .tmp*
-#	rm -rf out*
-#	rm -rf *.plist
-#	find . -name "*.o" -exec rm {} +
-#	find . -name "*.un~" -exec rm {} +
-#	find . -name "*.back" -exec rm {} +
+del:
+	rm -rf .tmp*
+	rm -rf out*
+	rm -rf *.plist
+	find . -name "*.o" -exec rm {} +
+	find . -name "*.un~" -exec rm {} +
+	find . -name "*.back" -exec rm {} +
+	find . -name ".*.*.swp" -exec rm {} +
 
-# leaks:
-# 	while [ 1 ]; do leaks -q philo; sleep 2; done
+leaks:
+	while [ 1 ]; do leaks -q philo; sleep 2; done
+
 add:
 	git add .
 	git status
