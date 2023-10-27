@@ -60,6 +60,7 @@ typedef struct s_philo_data{
 	unsigned int	die_time;
 	unsigned int	eat_time;
 	unsigned int	sleep_time;
+	unsigned int	start_time;
 	pthread_mutex_t	eat_count_mutex;
 	int				eat_count;
 	t_shared_data	*shared_data;
