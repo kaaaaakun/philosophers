@@ -39,11 +39,11 @@ static long long int	plus_atoi(const char *str, int *flag)
 	{
 		result = result * 10 + (str[i] - '0');
 		if (INT_MAX < result)
-			*flag = ARGS_ERROR;
+			*flag = INVALID_ARGUMENTS;
 		i++;
 	}
 	if (str[i] != '\0')
-		*flag = ARGS_ERROR;
+		*flag = INVALID_ARGUMENTS;
 	return (result);
 }
 
@@ -62,11 +62,11 @@ static long long int	minus_atoi(const char *str, int *flag)
 	{
 		result = result * 10 - (str[i] - '0');
 		if (result < INT_MIN)
-			*flag = ARGS_ERROR;
+			*flag = INVALID_ARGUMENTS;
 		i++;
 	}
 	if (str[i] != '\0')
-		*flag = ARGS_ERROR;
+		*flag = INVALID_ARGUMENTS;
 	return (result);
 }
 
@@ -77,7 +77,7 @@ int	philo_atoi(const char *str, int *flag)
 	if (*str == '-')
 	{
 		str++;
-		*flag = ARGS_ERROR;
+		*flag = INVALID_ARGUMENTS;
 		result = minus_atoi(str, flag);
 	}
 	else
@@ -85,11 +85,11 @@ int	philo_atoi(const char *str, int *flag)
 		if (*str == '+')
 		{
 			str++;
-			*flag = ARGS_ERROR;
+			*flag = INVALID_ARGUMENTS;
 		}
 		result = plus_atoi(str, flag);
 	}
 	if (result == 0)
-		*flag = ARGS_ERROR;
+		*flag = INVALID_ARGUMENTS;
 	return (result);
 }

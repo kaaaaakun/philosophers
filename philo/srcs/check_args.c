@@ -12,41 +12,49 @@
 
 #include "philo.h"
 
-static void	*print_error(void);
+#define INIT 0
+#define INVALID_ARGUMENTS 1
 
-t_philo_routine_data	*check_args_and_make_routine_data(int argc, \
-							char *argv[])
+static bool	*print_error(void);
+static bool	set_args_config(int argc, char *argv[], t_philo_config *config);
+bool		build_philo_config(int argc, char *argv[], t_philo_config *config);
+
+bool	build_philo_config(int argc, char *argv[], t_philo_config *config)
 {
-	int						flag;
-	t_philo_routine_data	*routine_data;
-
-	flag = INIT;
 	if (!(argc == 5 || argc == 6))
 		return (print_error());
-	routine_data = (t_philo_routine_data *) malloc \
-				(sizeof (t_philo_routine_data));
-	if (routine_data == NULL)
+	config = (t_philo_config *) malloc (sizeof (t_philo_config));
+	if (config == NULL)
 		return (print_error());
-	routine_data->num_of_philo = philo_atoi(argv[1], &flag);
-	routine_data->time_to_die = philo_atoi(argv[2], &flag);
-	routine_data->time_to_eat = philo_atoi(argv[3], &flag);
-	routine_data->time_to_sleep = philo_atoi(argv[4], &flag);
-	if (argc == 6)
-		routine_data->number_of_times_each_philosopher_must_eat = \
-			philo_atoi(argv[5], &flag);
-	else
-		routine_data->number_of_times_each_philosopher_must_eat = -1;
-	if (flag == ARGS_ERROR)
+	if (set_args_config(argc, argv, config) == INVALID_ARGUMENTS)
 	{	
-		free(routine_data);
-		routine_data = NULL;
-		print_error();
+		free(config);
+		config = NULL;
+		return (print_error());
 	}
-	return (routine_data);
+	return (true);
 }
 
-void	*print_error(void)
+static bool	set_args_config(int argc, char *argv[], t_philo_config *config)
+{
+	bool	parse_error;
+
+	parse_error = INIT;
+	config->num_philo = philo_atoi(argv[1], &parse_error);
+	config->die_time = philo_atoi(argv[2], &parse_error);
+	config->eat_time = philo_atoi(argv[3], &parse_error);
+	config->sleep_time = philo_atoi(argv[4], &parse_error);
+	config->has_option = false;
+	if (argc == 6)
+	{
+		config->must_eat_count = philo_atoi(argv[5], &parse_error);
+		config->has_option = true;
+	}
+	return (parse_error);
+}
+
+static bool	*print_error(void)
 {
 	printf("ERROR\n");
-	return (NULL);
+	return (false);
 }

@@ -24,7 +24,10 @@
 # endif
 
 # define INIT 0
-# define ARGS_ERROR 1
+# define INVALID_ARGUMENTS 1
+
+# define ALIVE 0
+# define DEAD 1
 
 # define SUCCESS 0
 # define DEAD -1
@@ -63,7 +66,7 @@ typedef struct s_philo_data{
 }	t_philo_data;
 
 typedef struct s_monitoring_philo{
-	t_philo_status	*philo_array;
+	t_philo_data	*philo_array;
 	t_shared_data	*shared_data;
 	t_philo_config	*config;
 }	t_monitor;
