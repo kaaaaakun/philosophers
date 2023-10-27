@@ -12,50 +12,42 @@
 
 #include "philo.h"
 
-int	ft_usleep(useconds_t ms)
-{
-	long long int	start_ms;
-	long long int	now_ms;
-
-	start_ms = only_get_ms_time();
-	while (1)
-	{
-		now_ms = only_get_ms_time();
-		if (ms <= now_ms - start_ms)
-			break ;
-	}
-	return (0);
-}
-
 int	set_fork(t_philo_status *philosopher, pthread_mutex_t *fork[])
 {
 	t_mutex	*mutex_struct;
-	int		philo_id;
+	int		id;
 
 	mutex_struct = philosopher->mutex_struct;
-	philo_id = philosopher->philo_id;
-	if (philo_id % 2 == 0)
-	{
-		if (philo_id == philosopher->routine_data->num_of_philo - 1)
-		{
-			fork[0] = &mutex_struct->fork[0];
-			fork[1] = &mutex_struct->fork[philo_id];
-		}
-		else
-		{
-			fork[0] = &mutex_struct->fork[philo_id];
-			fork[1] = &mutex_struct->fork[philo_id + 1];
-		}
-	}
-	else if (philo_id % 2 == 1)
-	{
-		fork[0] = &mutex_struct->fork[philo_id - 1];
-		fork[1] = &mutex_struct->fork[philo_id];
-	}
+	id = philosopher->philo_id;
+	fork[0] = &mutex_struct->fork[id];
+	if (id == num_of_philo - 1)
+		fork[1] = &mutex_struct->fork[0];
+	else
+		fork[1] = &mutex_struct->fork[id + 1];
+	if(id % 2 == 1)
+		//swap_fork(fork);
+//	if (philo_id % 2 == 0)
+//	{
+//		if (philo_id == philosopher->routine_data->num_of_philo - 1)
+//		{
+//			fork[0] = &mutex_struct->fork[0];
+//			fork[1] = &mutex_struct->fork[philo_id];
+//		}
+//		else
+//		{
+//			fork[0] = &mutex_struct->fork[philo_id];
+//			fork[1] = &mutex_struct->fork[philo_id + 1];
+//		}
+//	}
+//	else if (philo_id % 2 == 1)
+//	{
+//		fork[0] = &mutex_struct->fork[philo_id - 1];
+//		fork[1] = &mutex_struct->fork[philo_id];
+//	}
 	return (0);
 }
 
-int	get_fork(t_philo_status *philosopher, t_philo_routine_data *routine_data, \
+int	take_fork(t_philo_status *philosopher, t_philo_routine_data *routine_data, \
 				pthread_mutex_t *fork[], long long int *last_eat_time)
 {
 	int	philo_id;
@@ -65,7 +57,7 @@ int	get_fork(t_philo_status *philosopher, t_philo_routine_data *routine_data, \
 	philo_id = philosopher->philo_id;
 	pthread_mutex_lock(fork[0]);
 	if (routine_data->time_to_die \
-			< only_get_ms_time() - *last_eat_time)
+			< get_ms_time() - *last_eat_time)
 		set_deth_flag(philo_id, philosopher->mutex_struct);
 	if (m_printf(FORK, philo_id, 1, philosopher->mutex_struct) != 0)
 		return (-1);

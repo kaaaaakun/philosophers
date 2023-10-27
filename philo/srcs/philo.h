@@ -17,49 +17,51 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <stdbool.h>
 
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
 
-# define INIT 0x0
-# define ARGS_ERROR 0x1
+# define INIT 0
+# define ARGS_ERROR 1
 
 # define SUCCESS 0
 # define DEAD -1
 
-# define FORK " has taken a fork"
-# define EAT " is eating"
-# define SLEEP " is sleeping"
-# define THINK " is thinking"
-# define DIED " died"
+# define TKAE_FORK_MSG " has taken a fork"
+# define EAT_MSG " is eating"
+# define SLEEP_MSG " is sleeping"
+# define THINK_MSG " is thinking"
+# define DIE_MSG " died"
 
-typedef struct s_philo_routein_data{
-	long long int	num_of_philo;
-	long long int	time_to_die;
-	long long int	time_to_eat;
-	long long int	time_to_sleep;
-	long long int	number_of_times_each_philosopher_must_eat;
-	long long int	standard_time;
-}	t_philo_routine_data;
+typedef struct s_philo_config{
+	unsigned int	num_philo;
+	unsigned int	die_time;
+	unsigned int	eat_time;
+	unsigned int	sleep_time;
+	unsigned int	must_eat_count;
+	bool			has_option;
+	unsigned int	start_time;
+}	t_philo_config;
 
-typedef struct s_mutex{
+typedef struct s_shared_mutex{
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	deth_flag_mutex;
-	int				deth_flag;
+	pthread_mutex_t	death_flag_mutex;
+	int				death_flag;
 	pthread_mutex_t	print;
-}	t_mutex;
+}	t_shared_data;
 
-typedef struct s_philo_status{
-	int						philo_id;
+typedef struct s_philo_{
+	int						id;
 	pthread_mutex_t			eat_count_mutex;
 	int						eat_count;
-	t_mutex					*mutex_struct;
+	t_shared_data			shared_data;
 	t_philo_routine_data	*routine_data;
 }	t_philo_status;
 
 typedef struct s_monitoring_philo{
-	t_philo_status			*philo_data_arry;
+	t_philo_status			*philo_data_array;
 	t_mutex					*mutex_struct;
 	t_philo_routine_data	*routine_data;
 }	t_panopticon;
@@ -74,9 +76,9 @@ t_philo_routine_data	*check_args_and_make_routine_data(int argc, \
 							char *argv[]);
 
 //init.c
-void					make_philo_threads(pthread_t *philo_pthread_arry, \
-		t_philo_status *philo_data_arry, t_philo_routine_data *routine_data);
-void					set_data_in_philo_arry(t_philo_status *philo_data_arry, \
+void					make_philo_threads(pthread_t *philo_pthread_array, \
+		t_philo_status *philo_data_array, t_philo_routine_data *routine_data);
+void					set_data_in_philo_array(t_philo_status *philo_data_array, \
 					t_philo_routine_data *routine_data, t_mutex *mutex_data);
 t_mutex					*init_all_mutex_data(t_philo_routine_data *philo_info);
 
@@ -85,29 +87,29 @@ void					*routine_philo_life(void *philo_status);
 
 //パノプティコン
 void					set_and_make_panopticon_thread(\
-		t_philo_status *philo_data_arry, \
+		t_philo_status *philo_data_array, \
 		t_philo_routine_data *routine_data, t_mutex *mutex_data);
 
-//-philo_atoi.h
+//philo_atoi.h
 int						philo_atoi(const char *str, int *flag);
 
 //end_of_philo
 void					all_mutex_destroy(t_philo_routine_data *routine_data, \
 							t_mutex *mutex_data);
 void					join_and_destory_mutex(\
-		t_philo_routine_data *routine_data, pthread_t *philo_pthread_arry, \
-		t_philo_status *philo_data_arry, t_mutex *mutex_data);
+		t_philo_routine_data *routine_data, pthread_t *philo_pthread_array, \
+		t_philo_status *philo_data_array, t_mutex *mutex_data);
 
 //print_msg
 int						m_printf(char *msg, int nbr, \
 								int type, t_mutex *mutex_struct);
 
 //utils
-long long int			only_get_ms_time(void);
+long long int			get_ms_time(void);
 void					*ft_malloc(size_t size);
 
 int						is_other_philo_dead(t_philo_status *philosopher);
-int						set_deth_flag(int philo_id, t_mutex *mutex_struct);
+int						set_death_flag(int philo_id, t_mutex *mutex_struct);
 long long int			get_time_left_of_philo_died(int philo_id, \
 		long long int last_eat_time, t_philo_routine_data *routine_data);
 

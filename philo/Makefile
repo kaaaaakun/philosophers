@@ -100,4 +100,7 @@ re: fclean all
 
 # leaks:
 # 	while [ 1 ]; do leaks -q philo; sleep 2; done
+add:
+	git add .
+	git status
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

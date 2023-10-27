@@ -73,7 +73,7 @@ void	*routine_philo_life(void *philo_status)
 	number_of_times_each_philosopher_must_eat = \
 		philosopher->routine_data->number_of_times_each_philosopher_must_eat;
 	meet_up(philosopher);
-	last_eat_time = only_get_ms_time();
+	last_eat_time = get_ms_time();
 	while (1)
 	{
 		if (get_fork_and_eat_philo(philosopher, fork, \
@@ -94,7 +94,7 @@ long long int	get_time_left_of_philo_died(int philo_id, \
 	long long int	now_time;
 	long long int	time_left;
 
-	now_time = only_get_ms_time();
+	now_time = get_ms_time();
 	if (now_time == -1)
 		return (-1);
 	time_left = routine_data->time_to_die - (now_time - last_eat_time);

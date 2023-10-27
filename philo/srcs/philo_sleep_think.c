@@ -32,7 +32,7 @@ int	sleep_philo(t_philo_status *philosopher, long long int *last_eat_time)
 		set_deth_flag(philo_id, mutex_struct);
 		return (-1);
 	}
-	*last_eat_time = only_get_ms_time();
+	*last_eat_time = get_ms_time();
 	m_printf(SLEEP, philo_id, 1, mutex_struct);
 	ft_usleep(routine_data->time_to_sleep);
 	return (SUCCESS);

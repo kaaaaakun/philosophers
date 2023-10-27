@@ -23,10 +23,7 @@ int	main(int argc, char *argv[])
 
 	routine_data = check_args_and_make_routine_data(argc, argv);
 	if (routine_data == NULL)
-	{
-		printf("ERROR\n");
 		return (1);
-	}
 	exec_philo_task(routine_data, &flag);
 	free(routine_data);
 	return (0);

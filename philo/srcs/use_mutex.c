@@ -40,30 +40,26 @@ int	is_other_philo_dead(t_philo_status *philosopher)
 	return (0);
 }
 
-int	m_printf(char *msg, int nbr, int type, t_mutex *mutex_struct)
+bool	is_need_stop()
 {
-	long long int			ms;
-	static long long int	start_time;
-	static int				count;
-	static int				deth_flag;
+}
 
-	ms = only_get_ms_time();
-	if (ms == -1)
-		return (-1);
+bool	print_log(char *msg, int nbr, int type, t_mutex *mutex_struct)
+{
+	unsigned int	ms;
+	unsigned int	start_time;
+
 	pthread_mutex_lock(&mutex_struct->print);
+	ms = get_ms_time();
+	if (ms == -1)
+		return (false);
+//	if (is_need_stop() == true && type != DEBUG)
 	if (deth_flag == 1 && type != DEBUG)
 	{
 		pthread_mutex_unlock(&mutex_struct->print);
-		return (-2);
-	}
-	if (type == DEAD)
-		deth_flag = 1;
-	if (count == 0)
-	{
-		start_time = ms;
-		count++;
+		return (false);
 	}
 	printf("\x1b[38;5;%d29m%lld %d %s\x1b[0m\n", nbr, ms - start_time, nbr, msg);
 	pthread_mutex_unlock(&mutex_struct->print);
-	return (0);
+	return (true);
 }
