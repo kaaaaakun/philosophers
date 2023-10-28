@@ -14,7 +14,8 @@
 
 bool	free_all(t_monitor *monitor)
 {
-	free(monitor->shared_data->fork);
+	if (monitor->shared_data != NULL)
+		free(monitor->shared_data->fork);
 	free(monitor->shared_data);
 	free(monitor->config);
 	free(monitor->philo_array);

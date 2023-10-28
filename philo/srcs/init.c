@@ -29,22 +29,19 @@ static bool	build_dataset(t_monitor *monitor, t_philo_config *config)
 	t_shared_data	*mutex_data;
 
 	monitor = malloc(sizeof(t_monitor));
+	if (monitor == NULL)
+	{
+		free(config);
+		return (false);
+	}
 	philo_data_array = malloc(sizeof(t_philo_data) * config->num_philo);
 	thread_array = malloc(sizeof(pthread_t) * config->num_philo);
 	mutex_data = malloc(sizeof(t_shared_data));
 	if (mutex_data != NULL)
 		mutex_data->fork = malloc (sizeof(pthread_mutex_t) * config->num_philo);
-	if (monitor == NULL || philo_data_array == NULL || \
-		mutex_data == NULL || mutex_data->fork == NULL || thread_array)
-	{
-		if (mutex_data != NULL)
-			free(mutex_data->fork);
-		free(mutex_data);
-		free(monitor);
-		free(config);
-		free(philo_data_array);
-		return (false);
-	}
+	if (philo_data_array == NULL || mutex_data == NULL || \
+		mutex_data->fork == NULL || thread_array)
+		return (free_all(monitor));
 	monitor->config = config;
 	monitor->philo_array = philo_data_array;
 	monitor->thread_array = thread_array;
@@ -101,4 +98,3 @@ static bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config)
 	destroy_all_mutex(monitor, config, i, j);
 	return (false);
 }
-

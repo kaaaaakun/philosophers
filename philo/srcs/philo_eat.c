@@ -12,33 +12,39 @@
 
 #include "philo.h"
 
-
-
-int	take_fork(t_philo_status *philosopher, t_philo_routine_data *routine_data, \
-				pthread_mutex_t *fork[], long long int *last_eat_time)
+void	death_stop(t_philo_data *data)
 {
-	int	philo_id;
-	int	num_of_philo;
-
-	num_of_philo = routine_data->num_of_philo;
-	philo_id = philosopher->philo_id;
-	pthread_mutex_lock(fork[0]);
-	if (routine_data->time_to_die \
-			< get_ms_time() - *last_eat_time)
-		set_deth_flag(philo_id, philosopher->mutex_struct);
-	if (m_printf(FORK, philo_id, 1, philosopher->mutex_struct) != 0)
-		return (-1);
-	if (num_of_philo == 1)
+	pthread_mutex_lock(&data->shared_data->shared_lock);
+	if (data->shared_data->terminate == NO)
 	{
-		ft_usleep(routine_data->time_to_die);
-		set_deth_flag(philo_id, philosopher->mutex_struct);
+		data->shared_data->terminate = YES;
+		printf("\x1b[38;5;%d29m%lld %d %s\x1b[0m\n", \
+		data->id + 1, get_ms_time() - data->start_time, data->id, DIE_MSG);
+	}
+	pthread_mutex_unlock(&data->shared_data->shared_lock);
+}
+
+int	take_fork(t_philo_data *data, \
+				pthread_mutex_t *fork[], unsigned int *last_eat_time)
+{
+	pthread_mutex_lock(fork[0]);
+	if (data->die_time <= get_ms_time() - *last_eat_time)
+	{
+		death_stop(data);
 		pthread_mutex_unlock(fork[0]);
-		return (-1);
+		return (false);
+	}
+	print_log(TKAE_FORK_MSG, NOMAL, data);
+	if (data->num_philo == 1)
+	{
+		ft_usleep(data->die_time);
+		death_stop(data);
+		pthread_mutex_unlock(fork[0]);
+		return (false);
 	}
 	pthread_mutex_lock(fork[1]);
-	if (m_printf(FORK, philo_id, 1, philosopher->mutex_struct) != 0)
-		return (-1);
-	return (0);
+	print_log(TKAE_FORK_MSG, NOMAL, data);
+	return (true);
 }
 
 int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value)
@@ -48,31 +54,30 @@ int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value)
 	return (return_value);
 }
 
-int	get_fork_and_eat_philo(t_philo_status *philosopher, \
-		pthread_mutex_t *fork[], long long int *last_eat_time)
+void	add_eatcount(t_philo_data *data)
 {
-	int				philo_id;
-	int				num_of_philo;
-	t_mutex			*mutex_struct;
-	long long int	time_left;
+	pthread_mutex_lock(&data->eat_count_mutex);
+	data->eat_count++;
+	pthread_mutex_unlock(&data->eat_count_mutex);
+}
 
-	mutex_struct = philosopher->mutex_struct;
-	philo_id = philosopher->philo_id;
-	num_of_philo = philosopher->routine_data->num_of_philo;
-	if (get_fork(philosopher, philosopher->routine_data, \
-				fork, last_eat_time) != SUCCESS)
-		return (-1);
-	if (m_printf(EAT, philo_id, 1, mutex_struct) < 0)
-		return (unlock_tow_forks(fork, -1));
-	time_left = get_time_left_of_philo_died(philo_id, \
-				*last_eat_time, philosopher->routine_data);
-	if (time_left < philosopher->routine_data->time_to_eat)
+bool	eat_philo(t_philo_data *data, \
+		pthread_mutex_t *fork[], unsigned int *last_eat_time)
+{
+	unsigned int	time_left;
+
+	if (take_fork(data, fork, last_eat_time) == false)
+		return (false);
+	if (print_log(EAT_MSG, NOMAL, data) == false)
+		return (unlock_tow_forks(fork, false));
+	add_eatcount(data);
+	time_left = last_eat_time + data->die_time;
+	if (time_left < get_ms_time() + data->eat_time)
 	{
-		if (0 < time_left)
-			ft_usleep(time_left);
-		set_deth_flag(philo_id, mutex_struct);
-		return (unlock_tow_forks(fork, -1));
+		wait_until_time(time_left);
+		death_stop(data);
+		return (unlock_tow_forks(fork, false));
 	}
-	ft_usleep(philosopher->routine_data->time_to_eat);
-	return (unlock_tow_forks(fork, SUCCESS));
+	ft_usleep(data->eat_time);
+	return (unlock_tow_forks(fork, true));
 }

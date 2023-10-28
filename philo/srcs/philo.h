@@ -26,6 +26,8 @@
 # define INIT 0
 # define INVALID_ARGUMENTS 1
 
+# define NOMAL 0
+
 # define NO 0
 # define YES 1
 
@@ -73,6 +75,9 @@ typedef struct s_monitoring_philo{
 	t_philo_config	*config;
 }	t_monitor;
 
+bool	print_log(char *msg, int type, t_philo_data *data);
+bool	eat_philo(t_philo_data *data, \
+		pthread_mutex_t *fork[], unsigned int *last_eat_time);
 //main.c
 int						main(int argc, char *argv[]);
 int						exec_philo_task(t_philo_routine_data *routine_data, \
@@ -108,8 +113,6 @@ void					join_and_destory_mutex(\
 		t_philo_status *philo_data_array, t_mutex *mutex_data);
 
 //print_msg
-int						m_printf(char *msg, int nbr, \
-								int type, t_mutex *mutex_struct);
 
 //utils
 long long int			get_ms_time(void);

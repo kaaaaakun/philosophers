@@ -44,10 +44,9 @@ void	ft_usleep(useconds_t ms)
 
 void	wait_until_time(unsigned int ms_time)
 {
-	while(1)
+	while (1)
 	{
 		if (ms_time <= get_ms_time())
 			break ;
 	}
 }
-
