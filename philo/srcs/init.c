@@ -52,7 +52,7 @@ static bool	build_dataset(t_monitor *monitor, t_philo_config *config)
 	return (true);
 }
 
-void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config)
+static void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config)
 {
 	t_philo_data	*philo_data_arry;
 	int				i;
@@ -73,8 +73,7 @@ void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config)
 	}
 }
 
-
-bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config)
+static bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config)
 {
 	t_shared_data	*mutex_data;
 	t_philo_data	*philo_data_array;
@@ -83,7 +82,7 @@ bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config)
 
 	philo_data_array = monitor->philo_array;
 	mutex_data = monitor->shared_data;
-	mutex_data->terminate = ALIVE;
+	mutex_data->terminate = NO;
 	i = 0;
 	j = 0;
 	if (pthread_mutex_init(&mutex_data->shared_lock, NULL) != 0)
