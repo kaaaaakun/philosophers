@@ -21,9 +21,6 @@ int	init_all_data(t_monitor *monitor, t_philo_config *config)
 		return (free_all(monitor));
 	return (true);
 }
-//malloc_data
-//init_mutex
-//set_data_in_philo
 
 static bool	build_dataset(t_monitor *monitor, t_philo_config *config)
 {

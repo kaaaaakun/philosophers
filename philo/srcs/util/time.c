@@ -13,11 +13,11 @@
 #include "philo.h"
 #include <sys/time.h>
 
-int	get_ms_time(void);
-void	ft_usleep(useconds_t ms);
-void	until_sleep(useconds_t ms)
+unsigned int	get_ms_time(void);
+void			ft_usleep(useconds_t ms);
+void			wait_until_time(unsigned int ms_time);
 
-long long int	get_ms_time(void)
+unsigned int	get_ms_time(void)
 {
 	long long int	ms;
 	struct timeval	time;
@@ -30,8 +30,8 @@ long long int	get_ms_time(void)
 
 void	ft_usleep(useconds_t ms)
 {
-	long long int	start_ms;
-	long long int	now_ms;
+	unsigned int	start_ms;
+	unsigned int	now_ms;
 
 	start_ms = get_ms_time();
 	while (true)
@@ -42,14 +42,12 @@ void	ft_usleep(useconds_t ms)
 	}
 }
 
-void	until_sleep(useconds_t ms)
+void	wait_until_time(unsigned int ms_time)
 {
-	long long int	now_ms;
-
-	while (true)
+	while(1)
 	{
-		now_ms = get_ms_time();
-		if (ms <= now_ms)
+		if (ms_time <= get_ms_time())
 			break ;
 	}
 }
+
