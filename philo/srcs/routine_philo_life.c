@@ -52,15 +52,15 @@ void	set_fork(t_philo_data *data, pthread_mutex_t **fork)
 
 	fork_array = data->shared_data->fork;
 	id = data->id;
-	if (id % 2 == 0)
+	if (id % 2 == 1)
 	{
-		fork[0] = &fork_array[id % data->num_philo + 1];
+		fork[0] = &fork_array[(id + 1) % data->num_philo];
 		fork[1] = &fork_array[id % data->num_philo];
 	}
 	else
 	{
 		fork[0] = &fork_array[id % data->num_philo];
-		fork[1] = &fork_array[id % data->num_philo + 1];
+		fork[1] = &fork_array[(id + 1) % data->num_philo];
 	}
 }
 
