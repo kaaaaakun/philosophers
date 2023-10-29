@@ -91,7 +91,7 @@ bool	think_philo(t_philo_data *data);
 //use_mutex
 bool	print_log(char *msg, int type, t_philo_data *data);
 void	set_stop_process(t_shared_data *data);
-bool	should_routine_stop(t_shared_data *data);
+int		should_routine_stop(t_shared_data *data);
 void	death_stop(t_philo_data *data);
 
 //end_of_philo

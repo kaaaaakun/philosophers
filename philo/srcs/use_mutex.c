@@ -18,7 +18,7 @@ bool	print_log(char *msg, int type, t_philo_data *data)
 
 	should_print = true;
 	pthread_mutex_lock(&data->shared_data->shared_lock);
-	if (should_routine_stop(data->shared_data) == NO && type == DEBUG)
+	if (data->shared_data->terminate == NO || type == DEBUG)
 	{
 		printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
 			data->id + 1, get_ms_time() - data->start_time, data->id, msg);

@@ -21,7 +21,6 @@ bool	make_philo_thread(t_monitor *monitor, t_philo_config *config)
 	t_philo_data	*philo_array;
 	unsigned int	i;
 
-	dprintf(2, "make thread[shared :%p]\n", monitor->shared_data);
 	thread_array = monitor->thread_array;
 	philo_array = monitor->philo_array;
 	i = 0;
@@ -51,7 +50,6 @@ void set_fork(t_philo_data *data, pthread_mutex_t **fork)
 	pthread_mutex_t *fork_array;
 	unsigned int id;
 
-	dprintf(2, "set_fork[shared :%p]\n", data->shared_data);
 	fork_array = data->shared_data->fork;
 	id = data->id;
 	if (id == data->num_philo - 1)
@@ -66,13 +64,13 @@ void set_fork(t_philo_data *data, pthread_mutex_t **fork)
 	}
 	else
 	{
-		fork[0] = &fork_array[id - 1];
+		fork[0] = &fork_array[id + 1];
 		fork[1] = &fork_array[id];
 	}
 }
-bool	should_routine_stop(t_shared_data *data)
+int	should_routine_stop(t_shared_data *data)
 {
-	bool	terminate_flag;
+	int	terminate_flag;
 
 	pthread_mutex_lock(&data->shared_lock);
 	terminate_flag = data->terminate;
@@ -90,6 +88,7 @@ void	*routine_philo_life(void *philo_data)
 	last_eat_time = data->start_time;
 	set_fork(data, fork);
 	wait_until_time(data->start_time);
+//	print_log("start", DEBUG, data);
 	while (should_routine_stop(data->shared_data) == NO)
 	{
 		if (eat_philo(data, fork, &last_eat_time) == false)
@@ -99,26 +98,30 @@ void	*routine_philo_life(void *philo_data)
 		if (think_philo(data) == false)
 			break ;
 	}
+	//print_log("---------end-----------", DEBUG, data);
 	wait_other_thread(data);
 	return (NULL);
 }
 
 void	wait_other_thread(t_philo_data *data)
 {
-	static unsigned int	philo_count;
+//	static unsigned int	philo_count;
 
-	while (1)
-	{
-		pthread_mutex_lock(&data->shared_data->shared_lock);
-		if (data->id == philo_count)
-		{
-			if (DEBUG == -10)
-				print_log("see you", DEBUG, data);
-			philo_count++;
-		}
-		if (philo_count == data->num_philo)
-			break ;
-		pthread_mutex_unlock(&data->shared_data->shared_lock);
-	}
-	pthread_mutex_unlock(&data->shared_data->shared_lock);
+//	while (1)
+//	{
+//		write(1,"1",1);
+//		pthread_mutex_lock(&data->shared_data->shared_lock);
+//		if (data->id == philo_count)
+//		{
+//			if (DEBUG == -10)
+//				print_log("see you", DEBUG, data);
+//			philo_count++;
+//		}
+//		if (philo_count == data->num_philo - 1)
+//			break ;
+//		pthread_mutex_unlock(&data->shared_data->shared_lock);
+//		usleep(1000);
+//	}
+//	pthread_mutex_unlock(&data->shared_data->shared_lock);
+	set_stop_process(data->shared_data);
 }

@@ -20,7 +20,7 @@ bool	make_monitor_thread(t_monitor *monitor, t_philo_config *config)
 {
 	pthread_t	monitor_thread;
 
-	if (config->has_option == true)
+	if (config->has_option != true)
 		return (true);
 	if (pthread_create(&monitor_thread, NULL, philo_monitor, (void *)monitor) != 0)
 	{
@@ -46,6 +46,7 @@ void	*philo_monitor(void *monitor_tmp)
 	num_philo = monitor->config->num_philo;
 	while (should_routine_stop(monitor->shared_data) == NO)
 	{
+		dprintf(2, "[philo_monitor]\n");
 		i = 0;
 		while (i < num_philo)
 		{

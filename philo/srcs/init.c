@@ -20,9 +20,9 @@ bool	init_all_data(t_monitor *monitor, t_philo_config *config)
 {
 	if (build_dataset(monitor, config) == false)
 		return (false);
-	dprintf(2, "init_data :%p]\n", monitor->philo_array);
+	//dprintf(2, "init_data :%p]\n", monitor->philo_array);
 	set_data_in_philo_array(monitor, config);
-	dprintf(2, "init_data :%p]\n", monitor->philo_array);
+	//dprintf(2, "init_data :%p]\n", monitor->philo_array);
 	if (init_all_mutex_data(monitor, config) == false)
 		return (free_all(monitor));
 	return (monitor);
@@ -56,7 +56,7 @@ static void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config)
 
 	i = 0;
 	philo_data_arry = monitor->philo_array;
-	dprintf(2, "set_data :%p]\n", monitor->philo_array);
+	//dprintf(2, "set_data :%p]\n", monitor->philo_array);
 	while (i < config->num_philo)
 	{
 		philo_data_arry[i].id = i;

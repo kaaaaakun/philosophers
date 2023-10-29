@@ -29,11 +29,6 @@ int	main(int argc, char *argv[])
 	return (0);
 }
 
-//set_monitor
-//make_philo_thread
-//make_monitor_thread
-//end_of_meal
-//
 void	*ft_malloc(size_t size)
 {
 	void	*result;
