@@ -10,31 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
 #include <sys/time.h>
+#include <stddef.h>
 
 unsigned int	get_ms_time(void);
-void			ft_usleep(useconds_t ms);
+void			ft_usleep(unsigned int ms);
 void			wait_until_time(unsigned int ms_time);
 
 unsigned int	get_ms_time(void)
 {
-	long long int	ms;
+	unsigned int	ms;
 	struct timeval	time;
 
-	if (gettimeofday(&time, NULL) != 0)
-		return (-1);
+	gettimeofday(&time, NULL);
 	ms = time.tv_sec * 1000 + time.tv_usec / 1000;
 	return (ms);
 }
 
-void	ft_usleep(useconds_t ms)
+void	ft_usleep(unsigned int ms)
 {
 	unsigned int	start_ms;
 	unsigned int	now_ms;
 
 	start_ms = get_ms_time();
-	while (true)
+	while (1)
 	{
 		now_ms = get_ms_time();
 		if (ms <= now_ms - start_ms)

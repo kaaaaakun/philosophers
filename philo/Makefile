@@ -19,32 +19,33 @@ OBJS_DIR = objs
 SRCS = $(addprefix srcs/, \
 		check_args.c \
 		end_of_philo.c \
-		gettimeofday.c \
 		init.c \
 		main.c \
-		monitor_in_panopticon.c \
-		philo_atoi.c \
+		monitor.c \
 		philo_eat.c \
 		philo_sleep_think.c \
 		routine_philo_life.c \
 		use_mutex.c \
+		util/philo_atoi.c \
+		util/swap.c \
+		util/time.c \
 		)
 
 OBJS = $(SRCS:.c=.o)
 
-CC		= cc
+CC	= cc
 CFLAGS  = -Wall -Wextra -Werror -g
 INCLUDE = -I ./srsc -I ./includes
-RM		= rm -rf
+RM	= rm -rf
 
 # Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
-ifdef WITH_CRASH
+ifdef WITH_SANI
 	CFLAGS += -O0 -fsanitize=address
 endif
 
-ifndef WITH_CRASH
-	CFLAGS += -fsanitize=thread
+ifndef WITH_THRE
+	CFLAGS += -fsanitize=thread -D DEBUG=-10
 endif
 
 ifdef WITH_DEBUG
@@ -57,16 +58,16 @@ endif
 all: $(NAME)
 
 .c.o:
-	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(INCLUDE) $(LDFLAGS) $(CFLAGS) -o $@
 
 clean:
-	@ $(RM) $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	@ $(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
@@ -76,6 +77,10 @@ re: fclean all
 debug:
 	make WITH_DEBUG=1
 
+# for debug
+thre:
+	make WITH_THRE=1
+
  # for malloc debug
 malloc:
 	make fclean
@@ -83,8 +88,8 @@ malloc:
 	make all
 
 # for -fsanitize=address debug
-crash:
-	make WITH_CRASH=1
+sani:
+	make WITH_SANI=1
 
 # nonused variables
 clang:

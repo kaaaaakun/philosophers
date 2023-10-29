@@ -12,26 +12,23 @@
 
 #include "philo.h"
 
-void	set_stop_process(t_shared_data *data)
-{
-	pthread_mutex_lock(&data->shared_lock);
-	data->terminate = YES;
-	pthread_mutex_unlock(&data->shared_lock);
-}
+void	*routine_philo_life(void *philo_data);
+void	wait_other_thread(t_philo_data *data);
 
-void	make_philo_thread(t_monitor *monitor, t_philo_config *config)
+bool	make_philo_thread(t_monitor *monitor, t_philo_config *config)
 {
 	pthread_t		*thread_array;
 	t_philo_data	*philo_array;
-	int				i;
+	unsigned int	i;
 
+	dprintf(2, "make thread[shared :%p]\n", monitor->shared_data);
 	thread_array = monitor->thread_array;
 	philo_array = monitor->philo_array;
 	i = 0;
 	while (i < config->num_philo)
 	{
-		if (pthread_create(thread_array + i, NULL, \
-				&routine_philo_life, (void *)philo_array + i) != 0)
+		if (pthread_create(&thread_array[i], NULL, \
+				routine_philo_life, (void *)&philo_array[i]) != 0)
 		{
 			set_stop_process(monitor->shared_data);
 			join_philo_thread(thread_array, i);
@@ -39,13 +36,22 @@ void	make_philo_thread(t_monitor *monitor, t_philo_config *config)
 		}
 		i++;
 	}
+	return (true);
 }
 
-void	set_fork(t_philo_data *data, pthread_mutex_t *fork[])
+void	set_stop_process(t_shared_data *data)
 {
-	pthread_mutex_t	*fork_array;
-	int				id;
+	pthread_mutex_lock(&data->shared_lock);
+	data->terminate = YES;
+	pthread_mutex_unlock(&data->shared_lock);
+}
 
+void set_fork(t_philo_data *data, pthread_mutex_t **fork)
+{
+	pthread_mutex_t *fork_array;
+	unsigned int id;
+
+	dprintf(2, "set_fork[shared :%p]\n", data->shared_data);
 	fork_array = data->shared_data->fork;
 	id = data->id;
 	if (id == data->num_philo - 1)
@@ -64,7 +70,6 @@ void	set_fork(t_philo_data *data, pthread_mutex_t *fork[])
 		fork[1] = &fork_array[id];
 	}
 }
-
 bool	should_routine_stop(t_shared_data *data)
 {
 	bool	terminate_flag;
@@ -75,22 +80,19 @@ bool	should_routine_stop(t_shared_data *data)
 	return (terminate_flag);
 }
 
-void	routine_philo_life(void *philo_data)
+void	*routine_philo_life(void *philo_data)
 {
 	t_philo_data	*data;
 	unsigned int	last_eat_time;
-	pthread_mutex_t	fork[2];
-	int				i;
-	int				must_eat;
+	pthread_mutex_t	*fork[2];
 
-	i = 0;
 	data = (t_philo_data *)philo_data;
 	last_eat_time = data->start_time;
-	set_fork(data, &fork);
+	set_fork(data, fork);
 	wait_until_time(data->start_time);
 	while (should_routine_stop(data->shared_data) == NO)
 	{
-		if (eat_philo(data, &fork, &last_eat_time) == false)
+		if (eat_philo(data, fork, &last_eat_time) == false)
 			break ;
 		if (sleep_philo(data, &last_eat_time) == false)
 			break ;
@@ -98,11 +100,12 @@ void	routine_philo_life(void *philo_data)
 			break ;
 	}
 	wait_other_thread(data);
+	return (NULL);
 }
 
 void	wait_other_thread(t_philo_data *data)
 {
-	static int	philo_count;
+	static unsigned int	philo_count;
 
 	while (1)
 	{

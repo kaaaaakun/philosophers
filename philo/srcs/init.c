@@ -12,50 +12,51 @@
 
 #include "philo.h"
 
-int	init_all_data(t_monitor *monitor, t_philo_config *config)
+t_monitor	*build_dataset(t_monitor *monitor, t_philo_config *config);
+static void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config);
+static bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config);
+
+bool	init_all_data(t_monitor *monitor, t_philo_config *config)
 {
 	if (build_dataset(monitor, config) == false)
 		return (false);
+	dprintf(2, "init_data :%p]\n", monitor->philo_array);
 	set_data_in_philo_array(monitor, config);
+	dprintf(2, "init_data :%p]\n", monitor->philo_array);
 	if (init_all_mutex_data(monitor, config) == false)
 		return (free_all(monitor));
-	return (true);
+	return (monitor);
 }
 
-static bool	build_dataset(t_monitor *monitor, t_philo_config *config)
+t_monitor	*build_dataset(t_monitor *monitor, t_philo_config *config)
 {
 	t_philo_data	*philo_data_array;
 	pthread_t		*thread_array;
 	t_shared_data	*mutex_data;
 
-	monitor = malloc(sizeof(t_monitor));
-	if (monitor == NULL)
-	{
-		free(config);
-		return (false);
-	}
-	philo_data_array = malloc(sizeof(t_philo_data) * config->num_philo);
-	thread_array = malloc(sizeof(pthread_t) * config->num_philo);
-	mutex_data = malloc(sizeof(t_shared_data));
+	philo_data_array = ft_malloc(sizeof(t_philo_data) * config->num_philo);
+	thread_array = ft_malloc(sizeof(pthread_t) * config->num_philo);
+	mutex_data = ft_malloc(sizeof(t_shared_data));
 	if (mutex_data != NULL)
-		mutex_data->fork = malloc (sizeof(pthread_mutex_t) * config->num_philo);
+		mutex_data->fork = ft_malloc(sizeof(pthread_mutex_t) * config->num_philo);
 	if (philo_data_array == NULL || mutex_data == NULL || \
-		mutex_data->fork == NULL || thread_array)
+		mutex_data->fork == NULL || thread_array == NULL)
 		return (free_all(monitor));
 	monitor->config = config;
 	monitor->philo_array = philo_data_array;
 	monitor->thread_array = thread_array;
 	monitor->shared_data = mutex_data;
-	return (true);
+	return (monitor);
 }
 
 static void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config)
 {
 	t_philo_data	*philo_data_arry;
-	int				i;
+	unsigned int	i;
 
 	i = 0;
 	philo_data_arry = monitor->philo_array;
+	dprintf(2, "set_data :%p]\n", monitor->philo_array);
 	while (i < config->num_philo)
 	{
 		philo_data_arry[i].id = i;
@@ -74,11 +75,11 @@ static bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config)
 {
 	t_shared_data	*mutex_data;
 	t_philo_data	*philo_data_array;
-	int				i;
-	int				j;
+	unsigned int	i;
+	unsigned int	j;
 
-	philo_data_array = monitor->philo_array;
 	mutex_data = monitor->shared_data;
+	philo_data_array = monitor->philo_array;
 	mutex_data->terminate = NO;
 	i = 0;
 	j = 0;
@@ -95,6 +96,6 @@ static bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config)
 	}
 	if (i == config->num_philo)
 		return (true);
-	destroy_all_mutex(monitor, config, i, j);
+	destroy_all_mutex(monitor, i, j);
 	return (false);
 }

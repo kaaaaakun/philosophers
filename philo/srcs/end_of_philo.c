@@ -12,28 +12,26 @@
 
 #include "philo.h"
 
-bool	free_all(t_monitor *monitor)
+void	*free_all(t_monitor *monitor)
 {
 	if (monitor->shared_data != NULL)
 		free(monitor->shared_data->fork);
 	free(monitor->shared_data);
-	free(monitor->config);
 	free(monitor->philo_array);
-	free(monitor);
-	return (false);
+	return (NULL);
 }
 
-void	destroy_all_mutex(t_monitor *monitor, t_philo_config *config, int i , int j)
+void	destroy_all_mutex(t_monitor *monitor, int num_i , int num_j)
 {
 	t_shared_data	*mutex_data;
 	t_philo_data	*philo_data_array;
 
 	philo_data_array = monitor->philo_array;
 	mutex_data = monitor->shared_data;
-	while (j--)
-		pthread_mutex_destroy(&mutex_data->fork[j]);
-	while (i--)
-		pthread_mutex_destroy(&philo_data_array[i].eat_count_mutex);
+	while (num_j--)
+		pthread_mutex_destroy(&mutex_data->fork[num_j]);
+	while (num_i--)
+		pthread_mutex_destroy(&philo_data_array[num_i].eat_count_mutex);
 	pthread_mutex_destroy(&mutex_data->shared_lock);
 }
 
@@ -49,34 +47,9 @@ void	join_philo_thread(pthread_t *philo_array, unsigned int num_philo)
 	}
 }
 
-/// @brief 
-/// @param num_of_philo 
-/// @param philo_data_arry 
-/// @param mutex_data 
-void	destroy_mutex(int num_of_philo, t_philo_status *philo_data_arry, \
-			t_mutex *mutex_data)
+void	end_of_meal(t_monitor *monitor)
 {
-	int	i;
-
-	i = 0;
-	while (i < num_of_philo)
-	{	
-		pthread_mutex_destroy(&philo_data_arry[i].eat_count_mutex);
-		pthread_mutex_destroy(&mutex_data->fork[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&mutex_data->deth_flag_mutex);
-	pthread_mutex_destroy(&mutex_data->print);
-}
-
-void	join_and_destory_mutex(t_philo_routine_data *routine_data, \
-		pthread_t *philo_pthread_arry, t_philo_status *philo_data_arry, \
-		t_mutex *mutex_data)
-{
-	join_philo_thread(routine_data, philo_pthread_arry);
-	destroy_mutex(routine_data->num_of_philo, philo_data_arry, mutex_data);
-	free(philo_pthread_arry);
-	free(philo_data_arry);
-	free(mutex_data->fork);
-	free(mutex_data);
+	join_philo_thread(monitor->thread_array, monitor->config->num_philo);
+	destroy_all_mutex(monitor, monitor->config->num_philo, monitor->config->num_philo);
+	free_all(monitor);
 }

@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include <limits.h>
-#include "philo.h"
+
+# define INIT 0
+# define INVALID_ARGUMENTS 1
 
 static int	ft_isdigit(int c)
 {
@@ -45,6 +47,8 @@ static long long int	plus_atoi(const char *str, int *flag)
 	if (str[i] != '\0')
 		*flag = INVALID_ARGUMENTS;
 	return (result);
+	(void)l_divis;
+	(void)l_remain;
 }
 
 static long long int	minus_atoi(const char *str, int *flag)
@@ -68,6 +72,8 @@ static long long int	minus_atoi(const char *str, int *flag)
 	if (str[i] != '\0')
 		*flag = INVALID_ARGUMENTS;
 	return (result);
+	(void)l_divis;
+	(void)l_remain;
 }
 
 int	philo_atoi(const char *str, int *flag)

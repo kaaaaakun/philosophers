@@ -17,18 +17,18 @@
 
 static bool	*print_error(void);
 static bool	set_args_config(int argc, char *argv[], t_philo_config *config);
-bool		build_philo_config(int argc, char *argv[], t_philo_config *config);
+bool		make_philo_config(int argc, char *argv[], t_philo_config *config);
 
-bool	build_philo_config(int argc, char *argv[], t_philo_config *config)
+bool	make_philo_config(int argc, char *argv[], t_philo_config *config)
 {
 	if (!(argc == 5 || argc == 6))
 		return (print_error());
-	config = (t_philo_config *) malloc (sizeof (t_philo_config));
-	if (config == NULL)
-		return (print_error());
+	// config = (t_philo_config *) ft_malloc (sizeof (t_philo_config));
+	// if (config == NULL)
+	// 	return (print_error());
 	if (set_args_config(argc, argv, config) == INVALID_ARGUMENTS)
 	{	
-		free(config);
+		//free(config);
 		config = NULL;
 		return (print_error());
 	}
@@ -37,7 +37,7 @@ bool	build_philo_config(int argc, char *argv[], t_philo_config *config)
 
 static bool	set_args_config(int argc, char *argv[], t_philo_config *config)
 {
-	bool	parse_error;
+	int	parse_error;
 
 	parse_error = INIT;
 	config->num_philo = philo_atoi(argv[1], &parse_error);

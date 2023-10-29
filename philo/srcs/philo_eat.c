@@ -14,17 +14,20 @@
 
 void	death_stop(t_philo_data *data)
 {
+	unsigned int	ms_time;
+
 	pthread_mutex_lock(&data->shared_data->shared_lock);
 	if (data->shared_data->terminate == NO)
 	{
+		ms_time = get_ms_time() - data->start_time;
 		data->shared_data->terminate = YES;
-		printf("\x1b[38;5;%d29m%lld %d %s\x1b[0m\n", \
-		data->id + 1, get_ms_time() - data->start_time, data->id, DIE_MSG);
+		printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
+		data->id + 1, ms_time, data->id, DIE_MSG);
 	}
 	pthread_mutex_unlock(&data->shared_data->shared_lock);
 }
 
-int	take_fork(t_philo_data *data, \
+static int	take_fork(t_philo_data *data, \
 				pthread_mutex_t *fork[], unsigned int *last_eat_time)
 {
 	pthread_mutex_lock(fork[0]);
@@ -47,14 +50,14 @@ int	take_fork(t_philo_data *data, \
 	return (true);
 }
 
-int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value)
+static int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value)
 {
 	pthread_mutex_unlock(fork[1]);
 	pthread_mutex_unlock(fork[0]);
 	return (return_value);
 }
 
-void	add_eatcount(t_philo_data *data)
+static void	add_eatcount(t_philo_data *data)
 {
 	pthread_mutex_lock(&data->eat_count_mutex);
 	data->eat_count++;
@@ -71,10 +74,11 @@ bool	eat_philo(t_philo_data *data, \
 	if (print_log(EAT_MSG, NOMAL, data) == false)
 		return (unlock_tow_forks(fork, false));
 	add_eatcount(data);
-	time_left = last_eat_time + data->die_time;
+	time_left = *last_eat_time + data->die_time;
 	if (time_left < get_ms_time() + data->eat_time)
 	{
-		wait_until_time(time_left);
+		if (0 < time_left)
+			wait_until_time(time_left);
 		death_stop(data);
 		return (unlock_tow_forks(fork, false));
 	}
