@@ -20,9 +20,7 @@ bool	init_all_data(t_monitor *monitor, t_philo_config *config)
 {
 	if (build_dataset(monitor, config) == false)
 		return (false);
-	//dprintf(2, "init_data :%p]\n", monitor->philo_array);
 	set_data_in_philo_array(monitor, config);
-	//dprintf(2, "init_data :%p]\n", monitor->philo_array);
 	if (init_all_mutex_data(monitor, config) == false)
 		return (free_all(monitor));
 	return (monitor);
@@ -30,22 +28,16 @@ bool	init_all_data(t_monitor *monitor, t_philo_config *config)
 
 t_monitor	*build_dataset(t_monitor *monitor, t_philo_config *config)
 {
-	t_philo_data	*philo_data_array;
-	pthread_t		*thread_array;
-	t_shared_data	*mutex_data;
-
-	philo_data_array = ft_malloc(sizeof(t_philo_data) * config->num_philo);
-	thread_array = ft_malloc(sizeof(pthread_t) * config->num_philo);
-	mutex_data = ft_malloc(sizeof(t_shared_data));
-	if (mutex_data != NULL)
-		mutex_data->fork = ft_malloc(sizeof(pthread_mutex_t) * config->num_philo);
-	if (philo_data_array == NULL || mutex_data == NULL || \
-		mutex_data->fork == NULL || thread_array == NULL)
+	monitor->philo_array = ft_malloc(sizeof(t_philo_data) * config->num_philo);
+	monitor->thread_array = ft_malloc(sizeof(pthread_t) * config->num_philo);
+	monitor->shared_data = ft_malloc(sizeof(t_shared_data));
+	if (monitor->shared_data != NULL)
+		monitor->shared_data->fork \
+		= ft_malloc(sizeof(pthread_mutex_t) * config->num_philo);
+	if (monitor->philo_array == NULL || monitor->thread_array == NULL || \
+		monitor->shared_data == NULL || monitor->shared_data->fork == NULL)
 		return (free_all(monitor));
 	monitor->config = config;
-	monitor->philo_array = philo_data_array;
-	monitor->thread_array = thread_array;
-	monitor->shared_data = mutex_data;
 	return (monitor);
 }
 
@@ -56,7 +48,6 @@ static void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config)
 
 	i = 0;
 	philo_data_arry = monitor->philo_array;
-	//dprintf(2, "set_data :%p]\n", monitor->philo_array);
 	while (i < config->num_philo)
 	{
 		philo_data_arry[i].id = i;

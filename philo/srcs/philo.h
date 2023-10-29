@@ -64,7 +64,7 @@ typedef struct s_philo_data{
 	unsigned int	sleep_time;
 	unsigned int	start_time;
 	pthread_mutex_t	eat_count_mutex;
-	int				eat_count;
+	unsigned int	eat_count;
 	t_shared_data	*shared_data;
 }	t_philo_data;
 
@@ -86,7 +86,7 @@ void	end_of_meal(t_monitor *monitor);
 bool	eat_philo(t_philo_data *data, \
 		pthread_mutex_t *fork[], unsigned int *last_eat_time);
 bool	sleep_philo(t_philo_data *data, unsigned int *last_eat_time);
-bool	think_philo(t_philo_data *data);
+bool	think_philo(t_philo_data *data, unsigned int *last_eat_time);
 
 //use_mutex
 bool	print_log(char *msg, int type, t_philo_data *data);

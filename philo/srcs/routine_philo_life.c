@@ -87,7 +87,15 @@ void	*routine_philo_life(void *philo_data)
 	data = (t_philo_data *)philo_data;
 	last_eat_time = data->start_time;
 	set_fork(data, fork);
-	wait_until_time(data->start_time);
+	if (data->id % 2 == 0)
+	{
+		if (data->id == data->num_philo)
+			wait_until_time(data->start_time + data->eat_time);
+		else
+			wait_until_time(data->start_time);
+	}
+	else
+		wait_until_time(data->start_time + data->eat_time);
 //	print_log("start", DEBUG, data);
 	while (should_routine_stop(data->shared_data) == NO)
 	{
@@ -95,7 +103,7 @@ void	*routine_philo_life(void *philo_data)
 			break ;
 		if (sleep_philo(data, &last_eat_time) == false)
 			break ;
-		if (think_philo(data) == false)
+		if (think_philo(data, &last_eat_time) == false)
 			break ;
 	}
 	//print_log("---------end-----------", DEBUG, data);

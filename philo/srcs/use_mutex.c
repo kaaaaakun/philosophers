@@ -18,13 +18,14 @@ bool	print_log(char *msg, int type, t_philo_data *data)
 
 	should_print = true;
 	pthread_mutex_lock(&data->shared_data->shared_lock);
-	if (data->shared_data->terminate == NO || type == DEBUG)
+	if (data->shared_data->terminate == NO)
 	{
 		printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
-			data->id + 1, get_ms_time() - data->start_time, data->id, msg);
+			data->id + 2, get_ms_time() - data->start_time, data->id + 1, msg);
 	}
 	else
 		should_print = false;
 	pthread_mutex_unlock(&data->shared_data->shared_lock);
 	return (should_print);
+	(void)type;
 }

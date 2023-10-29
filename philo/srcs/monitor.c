@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-# include <stdbool.h>
+#include <stdbool.h>
 
 bool		make_monitor_thread(t_monitor *monitor, t_philo_config *config);
 void	*philo_monitor(void *monitor_tmp);
@@ -22,7 +22,8 @@ bool	make_monitor_thread(t_monitor *monitor, t_philo_config *config)
 
 	if (config->has_option != true)
 		return (true);
-	if (pthread_create(&monitor_thread, NULL, philo_monitor, (void *)monitor) != 0)
+	if (pthread_create(&monitor_thread, NULL, \
+								philo_monitor, (void *)monitor) != 0)
 	{
 		set_stop_process(monitor->shared_data);
 		destroy_all_mutex(monitor, config->num_philo, config->num_philo);
@@ -37,16 +38,15 @@ void	*philo_monitor(void *monitor_tmp)
 {
 	t_philo_data	*philo_array;
 	t_monitor		*monitor;
-	int				least_eat_count;
-	int				num_philo;
-	int 			i;
+	unsigned int	least_eat_count;
+	unsigned int	num_philo;
+	unsigned int 	i;
 
 	monitor = (t_monitor *)monitor_tmp;
 	philo_array = monitor->philo_array;
 	num_philo = monitor->config->num_philo;
 	while (should_routine_stop(monitor->shared_data) == NO)
 	{
-		dprintf(2, "[philo_monitor]\n");
 		i = 0;
 		while (i < num_philo)
 		{
@@ -54,10 +54,13 @@ void	*philo_monitor(void *monitor_tmp)
 			if (i == 0 || philo_array[i].eat_count < least_eat_count)
 				least_eat_count = philo_array[i].eat_count;
 			pthread_mutex_unlock(&philo_array[i].eat_count_mutex);
-			i++;
+			i++;	
 		}
-		if (least_eat_count == num_philo)
-		set_stop_process(monitor->shared_data);
+//		dprintf(2, "[%u]", least_eat_count);
+//		dprintf(2, "\n");
+		if (least_eat_count == monitor->config->must_eat_count)
+			set_stop_process(monitor->shared_data);
+		usleep(100000);
 	}
 	return (NULL);
 }

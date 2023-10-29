@@ -23,12 +23,8 @@ bool	make_philo_config(int argc, char *argv[], t_philo_config *config)
 {
 	if (!(argc == 5 || argc == 6))
 		return (print_error());
-	// config = (t_philo_config *) ft_malloc (sizeof (t_philo_config));
-	// if (config == NULL)
-	// 	return (print_error());
 	if (set_args_config(argc, argv, config) == INVALID_ARGUMENTS)
 	{	
-		//free(config);
 		config = NULL;
 		return (print_error());
 	}
@@ -44,7 +40,7 @@ static bool	set_args_config(int argc, char *argv[], t_philo_config *config)
 	config->die_time = philo_atoi(argv[2], &parse_error);
 	config->eat_time = philo_atoi(argv[3], &parse_error);
 	config->sleep_time = philo_atoi(argv[4], &parse_error);
-	config->start_time = get_ms_time() + 300;
+	config->start_time = get_ms_time() + config->num_philo * config->num_philo;
 	config->has_option = false;
 	if (argc == 6)
 	{

@@ -19,10 +19,10 @@ void	death_stop(t_philo_data *data)
 	pthread_mutex_lock(&data->shared_data->shared_lock);
 	if (data->shared_data->terminate == NO)
 	{
-		ms_time = get_ms_time() - data->start_time;
 		data->shared_data->terminate = YES;
+		ms_time = get_ms_time() - data->start_time;
 		printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
-		data->id + 1, ms_time, data->id, DIE_MSG);
+		data->id + 1, ms_time, data->id + 1, DIE_MSG);
 	}
 	pthread_mutex_unlock(&data->shared_data->shared_lock);
 }
@@ -75,7 +75,7 @@ bool	eat_philo(t_philo_data *data, \
 		return (unlock_tow_forks(fork, false));
 	add_eatcount(data);
 	time_left = *last_eat_time + data->die_time;
-	if (time_left < get_ms_time() + data->eat_time)
+	if (time_left <= get_ms_time() + data->eat_time)
 	{
 		if (0 < time_left)
 			wait_until_time(time_left);

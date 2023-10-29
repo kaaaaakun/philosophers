@@ -27,7 +27,6 @@ SRCS = $(addprefix srcs/, \
 		routine_philo_life.c \
 		use_mutex.c \
 		util/philo_atoi.c \
-		util/swap.c \
 		util/time.c \
 		)
 
@@ -44,7 +43,7 @@ ifdef WITH_SANI
 	CFLAGS += -O0 -fsanitize=address
 endif
 
-ifndef WITH_THRE
+ifdef WITH_THRE
 	CFLAGS += -fsanitize=thread -D DEBUG=-10
 endif
 

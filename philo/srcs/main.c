@@ -38,9 +38,9 @@ void	*ft_malloc(size_t size)
 		printf("%p/", result);
 	return (result);
 }
-//
-//__attribute__((destructor)) static void destructor()
-//{
-//    system("leaks -q philo");
-//}
-//
+
+__attribute__((destructor)) static void destructor()
+{
+   system("leaks -q philo");
+}
+
