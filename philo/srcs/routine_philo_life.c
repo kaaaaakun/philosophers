@@ -52,20 +52,15 @@ void	set_fork(t_philo_data *data, pthread_mutex_t **fork)
 
 	fork_array = data->shared_data->fork;
 	id = data->id;
-	if (id == data->num_philo - 1)
+	if (id % 2 == 0)
 	{
-		fork[0] = &fork_array[0];
-		fork[1] = &fork_array[id];
-	}
-	else if (id % 2 == 0)
-	{
-		fork[0] = &fork_array[id];
-		fork[1] = &fork_array[id + 1];
+		fork[0] = &fork_array[id % data->num_philo + 1];
+		fork[1] = &fork_array[id % data->num_philo];
 	}
 	else
 	{
-		fork[0] = &fork_array[id + 1];
-		fork[1] = &fork_array[id];
+		fork[0] = &fork_array[id % data->num_philo];
+		fork[1] = &fork_array[id % data->num_philo + 1];
 	}
 }
 
@@ -104,7 +99,8 @@ void	*routine_philo_life(void *philo_data)
 	}
 	else
 		wait_until_time(data->start_time + data->eat_time / 2);
-	usleep(data->id * 100);
+	if (data->num_philo % 2 == 1)
+		usleep(data->eat_time / data->num_philo * data->id * 1000);
 	while (should_routine_stop(data->shared_data) == NO)
 	{
 		if (eat_philo(data, fork, &last_eat_time) == false)

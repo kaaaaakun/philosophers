@@ -34,7 +34,8 @@ bool	think_philo(t_philo_data *data, unsigned int *last_eat_time)
 {
 	if (print_log(THINK_MSG, NOMAL, data) == false)
 		return (false);
-	if (data->num_philo % 2 == 1)
-		wait_until_time(*last_eat_time + data->eat_time * 3 / 2);
+	// if (data->num_philo % 2 == 1)
+	// 	wait_until_time(*last_eat_time + data->eat_time * 3 / 2);
 	return (true);
+	(void)last_eat_time;
 }
