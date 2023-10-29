@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:55:02 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/26 19:46:17 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:37:43 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,6 @@ static int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value)
 	return (return_value);
 }
 
-static void	add_eatcount(t_philo_data *data)
-{
-	pthread_mutex_lock(&data->eat_count_mutex);
-	data->eat_count++;
-	pthread_mutex_unlock(&data->eat_count_mutex);
-}
-
 bool	eat_philo(t_philo_data *data, \
 		pthread_mutex_t *fork[], unsigned int *last_eat_time)
 {
@@ -73,7 +66,6 @@ bool	eat_philo(t_philo_data *data, \
 		return (false);
 	if (print_log(EAT_MSG, NOMAL, data) == false)
 		return (unlock_tow_forks(fork, false));
-	add_eatcount(data);
 	time_left = *last_eat_time + data->die_time;
 	if (time_left <= get_ms_time() + data->eat_time)
 	{

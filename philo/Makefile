@@ -33,7 +33,7 @@ SRCS = $(addprefix srcs/, \
 OBJS = $(SRCS:.c=.o)
 
 CC	= cc
-CFLAGS  = -Wall -Wextra -Werror -g
+CFLAGS  = -Wall -Wextra -Werror -g -fsanitize=thread -D DEBUG=-10
 INCLUDE = -I ./srsc -I ./includes
 RM	= rm -rf
 

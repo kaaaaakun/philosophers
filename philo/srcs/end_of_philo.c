@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:19:04 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/24 20:27:20 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:37:15 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*free_all(t_monitor *monitor)
 	return (NULL);
 }
 
-void	destroy_all_mutex(t_monitor *monitor, int num_i , int num_j)
+void	destroy_all_mutex(t_monitor *monitor, int num_i, int num_j)
 {
 	t_shared_data	*mutex_data;
 	t_philo_data	*philo_data_array;

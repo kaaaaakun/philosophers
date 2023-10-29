@@ -12,6 +12,7 @@
 
 #include <sys/time.h>
 #include <stddef.h>
+#include <unistd.h>
 
 unsigned int	get_ms_time(void);
 void			ft_usleep(unsigned int ms);
@@ -38,6 +39,7 @@ void	ft_usleep(unsigned int ms)
 		now_ms = get_ms_time();
 		if (ms <= now_ms - start_ms)
 			break ;
+		usleep(10);
 	}
 }
 
@@ -47,5 +49,6 @@ void	wait_until_time(unsigned int ms_time)
 	{
 		if (ms_time <= get_ms_time())
 			break ;
+		usleep(10);
 	}
 }

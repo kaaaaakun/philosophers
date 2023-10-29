@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 19:57:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/26 17:54:22 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:42:55 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	set_stop_process(t_shared_data *data)
 	pthread_mutex_unlock(&data->shared_lock);
 }
 
-void set_fork(t_philo_data *data, pthread_mutex_t **fork)
+void	set_fork(t_philo_data *data, pthread_mutex_t **fork)
 {
-	pthread_mutex_t *fork_array;
-	unsigned int id;
+	pthread_mutex_t	*fork_array;
+	unsigned int	id;
 
 	fork_array = data->shared_data->fork;
 	id = data->id;
@@ -68,6 +68,7 @@ void set_fork(t_philo_data *data, pthread_mutex_t **fork)
 		fork[1] = &fork_array[id];
 	}
 }
+
 int	should_routine_stop(t_shared_data *data)
 {
 	int	terminate_flag;
@@ -76,6 +77,13 @@ int	should_routine_stop(t_shared_data *data)
 	terminate_flag = data->terminate;
 	pthread_mutex_unlock(&data->shared_lock);
 	return (terminate_flag);
+}
+
+static void	add_eatcount(t_philo_data *data)
+{
+	pthread_mutex_lock(&data->eat_count_mutex);
+	data->eat_count = data->eat_count + 1;
+	pthread_mutex_unlock(&data->eat_count_mutex);
 }
 
 void	*routine_philo_life(void *philo_data)
@@ -89,47 +97,23 @@ void	*routine_philo_life(void *philo_data)
 	set_fork(data, fork);
 	if (data->id % 2 == 0)
 	{
-		if (data->id == data->num_philo)
-			wait_until_time(data->start_time + data->eat_time);
+		if (data->id == data->num_philo - 1)
+			wait_until_time(data->start_time + data->eat_time * 1.5);
 		else
 			wait_until_time(data->start_time);
 	}
 	else
-		wait_until_time(data->start_time + data->eat_time);
-//	print_log("start", DEBUG, data);
+		wait_until_time(data->start_time + data->eat_time / 2);
+	usleep(data->id * 100);
 	while (should_routine_stop(data->shared_data) == NO)
 	{
 		if (eat_philo(data, fork, &last_eat_time) == false)
 			break ;
+		add_eatcount(data);
 		if (sleep_philo(data, &last_eat_time) == false)
 			break ;
 		if (think_philo(data, &last_eat_time) == false)
 			break ;
 	}
-	//print_log("---------end-----------", DEBUG, data);
-	wait_other_thread(data);
 	return (NULL);
-}
-
-void	wait_other_thread(t_philo_data *data)
-{
-//	static unsigned int	philo_count;
-
-//	while (1)
-//	{
-//		write(1,"1",1);
-//		pthread_mutex_lock(&data->shared_data->shared_lock);
-//		if (data->id == philo_count)
-//		{
-//			if (DEBUG == -10)
-//				print_log("see you", DEBUG, data);
-//			philo_count++;
-//		}
-//		if (philo_count == data->num_philo - 1)
-//			break ;
-//		pthread_mutex_unlock(&data->shared_data->shared_lock);
-//		usleep(1000);
-//	}
-//	pthread_mutex_unlock(&data->shared_data->shared_lock);
-	set_stop_process(data->shared_data);
 }

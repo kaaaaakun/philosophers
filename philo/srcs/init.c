@@ -28,12 +28,12 @@ bool	init_all_data(t_monitor *monitor, t_philo_config *config)
 
 t_monitor	*build_dataset(t_monitor *monitor, t_philo_config *config)
 {
-	monitor->philo_array = ft_malloc(sizeof(t_philo_data) * config->num_philo);
-	monitor->thread_array = ft_malloc(sizeof(pthread_t) * config->num_philo);
-	monitor->shared_data = ft_malloc(sizeof(t_shared_data));
+	monitor->philo_array = malloc(sizeof(t_philo_data) * config->num_philo);
+	monitor->thread_array = malloc(sizeof(pthread_t) * config->num_philo);
+	monitor->shared_data = malloc(sizeof(t_shared_data));
 	if (monitor->shared_data != NULL)
 		monitor->shared_data->fork \
-		= ft_malloc(sizeof(pthread_mutex_t) * config->num_philo);
+		= malloc(sizeof(pthread_mutex_t) * config->num_philo);
 	if (monitor->philo_array == NULL || monitor->thread_array == NULL || \
 		monitor->shared_data == NULL || monitor->shared_data->fork == NULL)
 		return (free_all(monitor));

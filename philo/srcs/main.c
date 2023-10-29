@@ -29,18 +29,16 @@ int	main(int argc, char *argv[])
 	return (0);
 }
 
-void	*ft_malloc(size_t size)
-{
-	void	*result;
-
-	result = (void *) malloc (size);
-	//if (DEBUG == -10)
-		printf("%p/", result);
-	return (result);
-}
-
-__attribute__((destructor)) static void destructor()
-{
-   system("leaks -q philo");
-}
-
+//void	*ft_malloc(size_t size)
+//{
+//	void	*result;
+//
+//	result = (void *) malloc (size);
+//	if (DEBUG == -10)
+//		printf("%p/", result);
+//	return (result);
+//}
+// __attribute__((destructor)) static void destructor()
+// {
+//    system("leaks -q philo");
+// }

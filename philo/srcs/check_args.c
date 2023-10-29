@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:44:04 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/25 18:06:57 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:34:26 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static bool	set_args_config(int argc, char *argv[], t_philo_config *config)
 	config->die_time = philo_atoi(argv[2], &parse_error);
 	config->eat_time = philo_atoi(argv[3], &parse_error);
 	config->sleep_time = philo_atoi(argv[4], &parse_error);
-	config->start_time = get_ms_time() + config->num_philo * config->num_philo;
+	config->start_time = get_ms_time() + config->num_philo * 10;
 	config->has_option = false;
 	if (argc == 6)
 	{

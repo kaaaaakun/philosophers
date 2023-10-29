@@ -6,7 +6,7 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:38:18 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/27 14:17:43 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/29 20:41:12 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,33 +76,35 @@ typedef struct s_monitoring_philo{
 }	t_monitor;
 
 //main
-bool	make_philo_config(int argc, char *argv[], t_philo_config *config);
-bool 	init_all_data(t_monitor *monitor, t_philo_config *config);
-bool	make_philo_thread(t_monitor *monitor, t_philo_config *config);
-bool	make_monitor_thread(t_monitor *monitor, t_philo_config *config);
-void	end_of_meal(t_monitor *monitor);
+bool			make_philo_config(int argc, char *argv[], \
+											t_philo_config *config);
+bool			init_all_data(t_monitor *monitor, t_philo_config *config);
+bool			make_philo_thread(t_monitor *monitor, t_philo_config *config);
+bool			make_monitor_thread(t_monitor *monitor, t_philo_config *config);
+void			end_of_meal(t_monitor *monitor);
 
 //routine
-bool	eat_philo(t_philo_data *data, \
-		pthread_mutex_t *fork[], unsigned int *last_eat_time);
-bool	sleep_philo(t_philo_data *data, unsigned int *last_eat_time);
-bool	think_philo(t_philo_data *data, unsigned int *last_eat_time);
+bool			eat_philo(t_philo_data *data, \
+				pthread_mutex_t *fork[], unsigned int *last_eat_time);
+bool			sleep_philo(t_philo_data *data, unsigned int *last_eat_time);
+bool			think_philo(t_philo_data *data, unsigned int *last_eat_time);
 
 //use_mutex
-bool	print_log(char *msg, int type, t_philo_data *data);
-void	set_stop_process(t_shared_data *data);
-int		should_routine_stop(t_shared_data *data);
-void	death_stop(t_philo_data *data);
+bool			print_log(char *msg, int type, t_philo_data *data);
+void			set_stop_process(t_shared_data *data);
+int				should_routine_stop(t_shared_data *data);
+void			death_stop(t_philo_data *data);
 
 //end_of_philo
-void	join_philo_thread(pthread_t *philo_array, unsigned int num_philo);
-void	destroy_all_mutex(t_monitor *monitor, int num_i , int num_j);
-void	*free_all(t_monitor *monitor);
+void			join_philo_thread(pthread_t *philo_array, \
+													unsigned int num_philo);
+void			destroy_all_mutex(t_monitor *monitor, int num_i, int num_j);
+void			*free_all(t_monitor *monitor);
 
 //utils
-int	philo_atoi(const char *str, int *flag);
+int				philo_atoi(const char *str, int *flag);
 unsigned int	get_ms_time(void);
-void	wait_until_time(unsigned int time);
-void	ft_usleep(unsigned int time);
-void	*ft_malloc(size_t size);
+void			wait_until_time(unsigned int time);
+void			ft_usleep(unsigned int time);
+void			*ft_malloc(size_t size);
 #endif
