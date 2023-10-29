@@ -16,7 +16,6 @@ bool	sleep_philo(t_philo_data *data, unsigned int *last_eat_time)
 {
 	unsigned int	time_left;
 
-	*last_eat_time = get_ms_time();
 	if (print_log(SLEEP_MSG, NOMAL, data) == false)
 		return (false);
 	time_left = *last_eat_time + data->die_time;

@@ -88,21 +88,17 @@ void	*routine_philo_life(void *philo_data)
 	pthread_mutex_t	*fork[2];
 
 	data = (t_philo_data *)philo_data;
-	last_eat_time = data->start_time;
+//	last_eat_time = data->start_time;
 	set_fork(data, fork);
 	if (data->id % 2 == 0)
-	{
-		if (data->id == data->num_philo - 1)
-			wait_until_time(data->start_time + data->eat_time * 1.5);
-		else
-			wait_until_time(data->start_time);
-	}
+		wait_until_time(data->start_time);
 	else
 		wait_until_time(data->start_time + data->eat_time / 2);
 	if (data->num_philo % 2 == 1)
-		usleep(data->eat_time / data->num_philo * data->id * 1000);
+		ft_usleep(data->eat_time / data->num_philo * data->id);
 	while (should_routine_stop(data->shared_data) == NO)
 	{
+		last_eat_time = get_ms_time();
 		if (eat_philo(data, fork, &last_eat_time) == false)
 			break ;
 		add_eatcount(data);
