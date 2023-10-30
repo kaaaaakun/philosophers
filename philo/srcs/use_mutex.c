@@ -20,8 +20,10 @@ bool	print_log(char *msg, int type, t_philo_data *data)
 	pthread_mutex_lock(&data->shared_data->shared_lock);
 	if (data->shared_data->terminate == NO)
 	{
-		printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
-			data->id + 2, get_ms_time() - data->start_time, data->id + 1, msg);
+		//printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
+		//	data->id + 2, get_ms_time() - data->start_time, data->id + 1, msg);
+		printf("%u %d %s\n", \
+		get_ms_time() - data->start_time, data->id + 1, msg);
 	}
 	else
 		should_print = false;

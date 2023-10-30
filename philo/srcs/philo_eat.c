@@ -21,8 +21,10 @@ void	death_stop(t_philo_data *data)
 	{
 		data->shared_data->terminate = YES;
 		ms_time = get_ms_time() - data->start_time;
-		printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
-		data->id + 2, ms_time, data->id + 1, DIE_MSG);
+	//	printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
+	//	data->id + 2, ms_time, data->id + 1, DIE_MSG);
+		printf("%u %d %s\n", \
+		ms_time, data->id + 1, DIE_MSG);
 	}
 	pthread_mutex_unlock(&data->shared_data->shared_lock);
 }
@@ -30,9 +32,12 @@ void	death_stop(t_philo_data *data)
 static int	take_fork(t_philo_data *data, \
 				pthread_mutex_t *fork[], unsigned int *last_eat_time)
 {
+	//print_log("kokodayo!", NOMAL, data);
 	pthread_mutex_lock(fork[0]);
-	if (data->die_time <= get_ms_time() - *last_eat_time)
+	//print_log("kokodayo 2!", NOMAL, data);
+	if (data->die_time < get_ms_time() - *last_eat_time)
 	{
+	//print_log("kokodayo death!", NOMAL, data);
 		death_stop(data);
 		pthread_mutex_unlock(fork[0]);
 		return (false);
@@ -62,9 +67,9 @@ bool	eat_philo(t_philo_data *data, \
 {
 	if (take_fork(data, fork, last_eat_time) == false)
 		return (false);
+	*last_eat_time = get_ms_time();
 	if (print_log(EAT_MSG, NOMAL, data) == false)
 		return (unlock_tow_forks(fork, false));
-	*last_eat_time = get_ms_time();
 	ft_usleep(data->eat_time);
 	return (unlock_tow_forks(fork, true));
 }
