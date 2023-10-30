@@ -6,38 +6,34 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:55:02 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/29 20:37:43 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:30:51 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	death_stop(t_philo_data *data)
-{
-	unsigned int	ms_time;
+static int	take_fork(t_philo_data *data, \
+				pthread_mutex_t *fork[], unsigned int *last_eat_time);
+static int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value);
 
-	pthread_mutex_lock(&data->shared_data->shared_lock);
-	if (data->shared_data->terminate == NO)
-	{
-		data->shared_data->terminate = YES;
-		ms_time = get_ms_time() - data->start_time;
-	//	printf("\x1b[38;5;%d29m%u %d %s\x1b[0m\n", \
-	//	data->id + 2, ms_time, data->id + 1, DIE_MSG);
-		printf("%u %d %s\n", \
-		ms_time, data->id + 1, DIE_MSG);
-	}
-	pthread_mutex_unlock(&data->shared_data->shared_lock);
+bool	eat_philo(t_philo_data *data, \
+		pthread_mutex_t *fork[], unsigned int *last_eat_time)
+{
+	if (take_fork(data, fork, last_eat_time) == false)
+		return (false);
+	*last_eat_time = get_ms_time();
+	if (print_log(EAT_MSG, NOMAL, data) == false)
+		return (unlock_tow_forks(fork, false));
+	ft_usleep(data->eat_time);
+	return (unlock_tow_forks(fork, true));
 }
 
 static int	take_fork(t_philo_data *data, \
 				pthread_mutex_t *fork[], unsigned int *last_eat_time)
 {
-	//print_log("kokodayo!", NOMAL, data);
 	pthread_mutex_lock(fork[0]);
-	//print_log("kokodayo 2!", NOMAL, data);
 	if (data->die_time < get_ms_time() - *last_eat_time)
 	{
-	//print_log("kokodayo death!", NOMAL, data);
 		death_stop(data);
 		pthread_mutex_unlock(fork[0]);
 		return (false);
@@ -60,16 +56,4 @@ static int	unlock_tow_forks(pthread_mutex_t *fork[], int return_value)
 	pthread_mutex_unlock(fork[1]);
 	pthread_mutex_unlock(fork[0]);
 	return (return_value);
-}
-
-bool	eat_philo(t_philo_data *data, \
-		pthread_mutex_t *fork[], unsigned int *last_eat_time)
-{
-	if (take_fork(data, fork, last_eat_time) == false)
-		return (false);
-	*last_eat_time = get_ms_time();
-	if (print_log(EAT_MSG, NOMAL, data) == false)
-		return (unlock_tow_forks(fork, false));
-	ft_usleep(data->eat_time);
-	return (unlock_tow_forks(fork, true));
 }

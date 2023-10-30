@@ -17,7 +17,6 @@
 
 static bool	*print_error(void);
 static bool	set_args_config(int argc, char *argv[], t_philo_config *config);
-bool		make_philo_config(int argc, char *argv[], t_philo_config *config);
 
 bool	make_philo_config(int argc, char *argv[], t_philo_config *config)
 {

@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-t_monitor	*build_dataset(t_monitor *monitor, t_philo_config *config);
+static void	*build_dataset(t_monitor *monitor, t_philo_config *config);
 static void	set_data_in_philo_array(t_monitor *monitor, t_philo_config *config);
 static bool	init_all_mutex_data(t_monitor *monitor, t_philo_config *config);
 
@@ -26,7 +26,7 @@ bool	init_all_data(t_monitor *monitor, t_philo_config *config)
 	return (monitor);
 }
 
-t_monitor	*build_dataset(t_monitor *monitor, t_philo_config *config)
+static void	*build_dataset(t_monitor *monitor, t_philo_config *config)
 {
 	monitor->philo_array = malloc(sizeof(t_philo_data) * config->num_philo);
 	monitor->thread_array = malloc(sizeof(pthread_t) * config->num_philo);

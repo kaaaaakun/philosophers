@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/27 14:15:04 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/30 17:37:39 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,18 +33,14 @@ SRCS = $(addprefix srcs/, \
 OBJS = $(SRCS:.c=.o)
 
 CC	= cc
-CFLAGS  = -Wall -Wextra -Werror -g -fsanitize=thread -D DEBUG=-10
+CFLAGS  = -Wall -Wextra -Werror
 INCLUDE = -I ./srsc -I ./includes
 RM	= rm -rf
 
 # Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 ifdef WITH_SANI
-	CFLAGS += -O0 -fsanitize=address
-endif
-
-ifdef WITH_THRE
-	CFLAGS += -fsanitize=thread -D DEBUG=-10
+	CFLAGS += -g -fsanitize=address
 endif
 
 ifdef WITH_DEBUG
@@ -71,42 +67,42 @@ fclean: clean
 re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-.PHONY: all clean fclean re debug
-# for debug
-debug:
-	make WITH_DEBUG=1
-
-# for debug
-thre:
-	make WITH_THRE=1
-
- # for malloc debug
-malloc:
-	make fclean
-	make malloc -C $(LIBFT_DIR)
-	make all
-
-# for -fsanitize=address debug
-sani:
-	make WITH_SANI=1
-
-# nonused variables
-clang:
-	clang --analyze $(SRCS) $(INCLUDE)
-
-del:
-	rm -rf .tmp*
-	rm -rf out*
-	rm -rf *.plist
-	find . -name "*.o" -exec rm {} +
-	find . -name "*.un~" -exec rm {} +
-	find . -name "*.back" -exec rm {} +
-	find . -name ".*.*.swp" -exec rm {} +
-
-leaks:
-	while [ 1 ]; do leaks -q philo; sleep 2; done
-
-add:
-	git add .
-	git status
+#.PHONY: all clean fclean re debug
+## for debug
+#debug:
+#	make WITH_DEBUG=1
+#
+## for debug
+#thre:
+#	make WITH_THRE=1
+#
+# # for malloc debug
+#malloc:
+#	make fclean
+#	make malloc -C $(LIBFT_DIR)
+#	make all
+#
+## for -fsanitize=address debug
+#sani:
+#	make WITH_SANI=1
+#
+## nonused variables
+#clang:
+#	clang --analyze $(SRCS) $(INCLUDE)
+#
+#del:
+#	rm -rf .tmp*
+#	rm -rf out*
+#	rm -rf *.plist
+#	find . -name "*.o" -exec rm {} +
+#	find . -name "*.un~" -exec rm {} +
+#	find . -name "*.back" -exec rm {} +
+#	find . -name ".*.*.swp" -exec rm {} +
+#
+#leaks:
+#	while [ 1 ]; do leaks -q philo; sleep 2; done
+#
+#add:
+#	git add .
+#	git status
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

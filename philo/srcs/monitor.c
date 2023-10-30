@@ -6,15 +6,14 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 13:52:52 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/25 18:43:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:31:26 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdbool.h>
 
-bool	make_monitor_thread(t_monitor *monitor, t_philo_config *config);
-void	*philo_monitor(void *monitor_tmp);
+static void	*philo_monitor(void *monitor_tmp);
 
 bool	make_monitor_thread(t_monitor *monitor, t_philo_config *config)
 {
@@ -36,7 +35,7 @@ bool	make_monitor_thread(t_monitor *monitor, t_philo_config *config)
 	return (true);
 }
 
-void	*philo_monitor(void *monitor_tmp)
+static void	*philo_monitor(void *monitor_tmp)
 {
 	t_philo_data	*philo_array;
 	t_monitor		*monitor;

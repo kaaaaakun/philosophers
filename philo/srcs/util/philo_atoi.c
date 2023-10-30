@@ -6,14 +6,14 @@
 /*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 13:32:37 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/25 18:11:14 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:33:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 
-# define INIT 0
-# define INVALID_ARGUMENTS 1
+#define INIT 0
+#define INVALID_ARGUMENTS 1
 
 static int	ft_isdigit(int c)
 {
