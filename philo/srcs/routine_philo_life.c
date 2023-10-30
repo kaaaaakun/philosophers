@@ -88,7 +88,7 @@ static void	wait_until_start_time(t_philo_data *data)
 
 	add_time = 0;
 	if (data->num_philo % 2 == 1)
-		add_time += data->eat_time / (data->num_philo - 1) * data->id;
+	add_time += data->eat_time / (data->num_philo - 1) * data->id;
 	if (data->id % 2 == 1)
 		add_time += data->eat_time / 2;
 	wait_until_time(data->start_time + add_time);

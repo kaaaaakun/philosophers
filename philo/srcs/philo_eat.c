@@ -24,6 +24,12 @@ bool	eat_philo(t_philo_data *data, \
 	*last_eat_time = get_ms_time();
 	if (print_log(EAT_MSG, NOMAL, data) == false)
 		return (unlock_tow_forks(fork, false));
+	if (data->die_time < data->eat_time)
+	{
+		ft_usleep(data->die_time);
+		death_stop(data);
+		return (unlock_tow_forks(fork, false));
+	}
 	ft_usleep(data->eat_time);
 	return (unlock_tow_forks(fork, true));
 }
