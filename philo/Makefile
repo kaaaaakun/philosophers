@@ -43,8 +43,8 @@ ifdef WITH_SANI
 	CFLAGS += -g -fsanitize=address
 endif
 
-ifdef WITH_DEBUG
-	CFLAGS += -fsanitize=thread -D DEBUG=-10
+ifdef WITH_THRE
+	CFLAGS += -g -fsanitize=thread 
 endif
 
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -67,16 +67,16 @@ fclean: clean
 re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-#.PHONY: all clean fclean re debug
-## for debug
-#debug:
-#	make WITH_DEBUG=1
-#
-## for debug
-#thre:
-#	make WITH_THRE=1
-#
-# # for malloc debug
+.PHONY: all clean fclean re debug
+# for debug
+debug:
+	make WITH_DEBUG=1
+
+# for debug
+thre:
+	make WITH_THRE=1
+
+# for malloc debug
 #malloc:
 #	make fclean
 #	make malloc -C $(LIBFT_DIR)
@@ -85,24 +85,4 @@ re: fclean all
 # for -fsanitize=address debug
 sani:
 	make WITH_SANI=1
-
-## nonused variables
-#clang:
-#	clang --analyze $(SRCS) $(INCLUDE)
-#
-#del:
-#	rm -rf .tmp*
-#	rm -rf out*
-#	rm -rf *.plist
-#	find . -name "*.o" -exec rm {} +
-#	find . -name "*.un~" -exec rm {} +
-#	find . -name "*.back" -exec rm {} +
-#	find . -name ".*.*.swp" -exec rm {} +
-#
-#leaks:
-#	while [ 1 ]; do leaks -q philo; sleep 2; done
-#
-#add:
-#	git add .
-#	git status
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

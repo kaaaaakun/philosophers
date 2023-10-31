@@ -33,6 +33,8 @@ bool	think_philo(t_philo_data *data, unsigned int *last_eat_time)
 {
 	if (print_log(THINK_MSG, NOMAL, data) == false)
 		return (false);
+	if (data->sleep_time <= data->eat_time)
+		ft_usleep(data->eat_time - data->sleep_time + 1);
 	return (true);
 	(void)last_eat_time;
 }
