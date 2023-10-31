@@ -84,14 +84,11 @@ static void	set_fork(t_philo_data *data, pthread_mutex_t **fork)
 
 static void	wait_until_start_time(t_philo_data *data)
 {
-	unsigned int	add_time;
-
-	add_time = 0;
-	if (data->num_philo % 2 == 1)
-	add_time += data->eat_time / (data->num_philo - 1) * data->id;
+	wait_until_time(data->start_time);
+	if (data->num_philo % 2 == 1 && data->num_philo != 1)
+		ft_usleep(data->eat_time / (data->num_philo - 1) * data->id);
 	if (data->id % 2 == 1)
-		add_time += data->eat_time / 2;
-	wait_until_time(data->start_time + add_time);
+		ft_usleep(data->eat_time / 2);
 }
 
 static void	add_eatcount(t_philo_data *data)

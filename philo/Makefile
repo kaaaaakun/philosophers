@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/30 17:37:39 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/31 14:12:23 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,10 +82,10 @@ re: fclean all
 #	make malloc -C $(LIBFT_DIR)
 #	make all
 #
-## for -fsanitize=address debug
-#sani:
-#	make WITH_SANI=1
-#
+# for -fsanitize=address debug
+sani:
+	make WITH_SANI=1
+
 ## nonused variables
 #clang:
 #	clang --analyze $(SRCS) $(INCLUDE)
